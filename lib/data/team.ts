@@ -1,0 +1,111 @@
+import type { BoardMember, Advisor, GeneralMember } from "@/lib/types";
+
+export const boardMembers: BoardMember[] = [
+  {
+    id: "b1",
+    name: "Khem Raj Adhikari",
+    position: "Chairperson",
+    ward: "Pokhara Ward 8",
+    contact: "chairperson@cbrsnepal.org",
+  },
+  {
+    id: "b2",
+    name: "Sarita Gurung",
+    position: "Vice Chairperson",
+    ward: "Pokhara Ward 17",
+    contact: "vicechair@cbrsnepal.org",
+  },
+  {
+    id: "b3",
+    name: "Hari Prasad Sharma",
+    position: "Secretary",
+    ward: "Pokhara Ward 4",
+    contact: "secretary@cbrsnepal.org",
+  },
+  {
+    id: "b4",
+    name: "Bina Thapa",
+    position: "Treasurer",
+    ward: "Pokhara Ward 11",
+    contact: "treasurer@cbrsnepal.org",
+  },
+  {
+    id: "b5",
+    name: "Ramesh K.C.",
+    position: "Executive Member",
+    ward: "Pokhara Ward 19",
+    contact: "board@cbrsnepal.org",
+  },
+  {
+    id: "b6",
+    name: "Laxmi Poudel",
+    position: "Executive Member",
+    ward: "Pokhara Ward 25",
+    contact: "board@cbrsnepal.org",
+  },
+];
+
+export const advisors: Advisor[] = [
+  {
+    id: "a1",
+    name: "Dr. Naresh Bhattarai",
+    position: "Senior Advisor",
+    expertise: "Rehabilitation Medicine",
+    contact: "advisors@cbrsnepal.org",
+  },
+  {
+    id: "a2",
+    name: "Anita Sherchan",
+    position: "Advisor",
+    expertise: "Inclusive Education Policy",
+    contact: "advisors@cbrsnepal.org",
+  },
+  {
+    id: "a3",
+    name: "Govinda Pandey",
+    position: "Advisor",
+    expertise: "Disability Rights & Law",
+    contact: "advisors@cbrsnepal.org",
+  },
+  {
+    id: "a4",
+    name: "Sunita Rana",
+    position: "Advisor",
+    expertise: "Community Development",
+    contact: "advisors@cbrsnepal.org",
+  },
+];
+
+/** Larger roster rendered as a searchable, paginated table. */
+export const generalMembers: GeneralMember[] = [
+  { id: "m1", name: "Krishna Bahadur Gurung", role: "General Member", ward: "Pokhara 1", joined: "2009" },
+  { id: "m2", name: "Maya Tamang", role: "General Member", ward: "Pokhara 2", joined: "2010" },
+  { id: "m3", name: "Dipak Adhikari", role: "Volunteer", ward: "Pokhara 3", joined: "2011" },
+  { id: "m4", name: "Sabina Magar", role: "General Member", ward: "Pokhara 5", joined: "2012" },
+  { id: "m5", name: "Top Bahadur Thapa", role: "General Member", ward: "Pokhara 6", joined: "2012" },
+  { id: "m6", name: "Gita Pariyar", role: "Volunteer", ward: "Pokhara 7", joined: "2013" },
+  { id: "m7", name: "Nabin Shrestha", role: "General Member", ward: "Pokhara 9", joined: "2013" },
+  { id: "m8", name: "Kamala Bhandari", role: "General Member", ward: "Pokhara 10", joined: "2014" },
+  { id: "m9", name: "Suraj Gurung", role: "Volunteer", ward: "Pokhara 12", joined: "2014" },
+  { id: "m10", name: "Radha Koirala", role: "General Member", ward: "Pokhara 13", joined: "2015" },
+  { id: "m11", name: "Bhim Prasad Sharma", role: "General Member", ward: "Pokhara 14", joined: "2015" },
+  { id: "m12", name: "Sarmila Rai", role: "General Member", ward: "Pokhara 15", joined: "2016" },
+  { id: "m13", name: "Mohan Lama", role: "Volunteer", ward: "Pokhara 16", joined: "2016" },
+  { id: "m14", name: "Goma Acharya", role: "General Member", ward: "Pokhara 18", joined: "2017" },
+  { id: "m15", name: "Padam Bahadur B.K.", role: "General Member", ward: "Pokhara 20", joined: "2017" },
+  { id: "m16", name: "Sunmaya Gurung", role: "General Member", ward: "Pokhara 21", joined: "2018" },
+  { id: "m17", name: "Til Kumari Thapa", role: "Volunteer", ward: "Pokhara 22", joined: "2018" },
+  { id: "m18", name: "Yam Prasad Poudel", role: "General Member", ward: "Pokhara 23", joined: "2019" },
+  { id: "m19", name: "Januka Gurung", role: "General Member", ward: "Pokhara 24", joined: "2019" },
+  { id: "m20", name: "Resham Bahadur Pun", role: "General Member", ward: "Pokhara 26", joined: "2020" },
+  { id: "m21", name: "Sita Devi Sharma", role: "General Member", ward: "Pokhara 27", joined: "2020" },
+  { id: "m22", name: "Bharat Thapa Magar", role: "Volunteer", ward: "Pokhara 28", joined: "2021" },
+  { id: "m23", name: "Mina Kumari Rai", role: "General Member", ward: "Pokhara 29", joined: "2021" },
+  { id: "m24", name: "Chandra Bahadur Gurung", role: "General Member", ward: "Pokhara 30", joined: "2022" },
+  { id: "m25", name: "Parbati Nepali", role: "General Member", ward: "Pokhara 31", joined: "2022" },
+  { id: "m26", name: "Lokendra Bhandari", role: "Volunteer", ward: "Pokhara 32", joined: "2023" },
+  { id: "m27", name: "Asha Gurung", role: "General Member", ward: "Pokhara 33", joined: "2023" },
+  { id: "m28", name: "Deepak Raj Poudel", role: "General Member", ward: "Lekhnath 1", joined: "2023" },
+  { id: "m29", name: "Sangita Thapa", role: "General Member", ward: "Lekhnath 2", joined: "2024" },
+  { id: "m30", name: "Naba Raj Adhikari", role: "Volunteer", ward: "Lekhnath 3", joined: "2024" },
+];
