@@ -54,23 +54,27 @@ export default function ContactPage() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {infoCards.map((card, i) => (
               <Reveal as="div" key={card.title} delay={i * 0.06}>
-                <div className="flex h-full flex-col rounded-2xl border border-border bg-surface p-6 shadow-card">
-                  <span className="grid size-12 place-items-center rounded-2xl bg-primary-50 text-primary">
+                <div className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-2xl">
+                  <span className="grid size-12 place-items-center rounded-2xl bg-primary-50 text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-accent group-hover:text-white">
                     <card.icon className="size-6" aria-hidden="true" />
                   </span>
-                  <h2 className="mt-4 text-base font-bold text-foreground">{card.title}</h2>
+                  <h2 className="mt-4 text-base font-bold text-foreground transition-colors duration-300 group-hover:text-accent">
+                    {card.title}
+                  </h2>
                   <div className="mt-2 space-y-1 text-sm text-muted">
                     {card.lines.map((line, j) =>
                       card.hrefs?.[j] ? (
                         <a
                           key={j}
                           href={card.hrefs[j]}
-                          className="block transition-colors hover:text-primary"
+                          className="block transition-all duration-300 hover:translate-x-1 hover:text-primary"
                         >
                           {line}
                         </a>
                       ) : (
-                        <p key={j}>{line}</p>
+                        <p key={j} className="transition-colors duration-300 group-hover:text-foreground/80">
+                          {line}
+                        </p>
                       ),
                     )}
                   </div>
@@ -82,8 +86,10 @@ export default function ContactPage() {
           {/* Form + map */}
           <div className="mt-12 grid gap-8 lg:grid-cols-[1.2fr_1fr]">
             <Reveal>
-              <div className="rounded-3xl border border-border bg-surface p-7 shadow-card sm:p-9">
-                <h2 className="text-2xl font-bold">Send Us a Message</h2>
+              <div className="rounded-3xl border border-border bg-surface p-7 shadow-card transition-all duration-300 hover:border-accent/30 hover:shadow-2xl sm:p-9">
+                <h2 className="text-2xl font-bold transition-colors duration-300 hover:text-accent">
+                  Send Us a Message
+                </h2>
                 <p className="mt-2 text-muted">
                   Fill in the form and we'll respond as soon as we can. Fields
                   marked with <span className="text-danger">*</span> are required.
@@ -96,38 +102,45 @@ export default function ContactPage() {
 
             <Reveal delay={0.08} className="flex flex-col gap-6">
               {/* Map */}
-              <div className="overflow-hidden rounded-3xl border border-border shadow-card">
+              <div className="group overflow-hidden rounded-3xl border border-border shadow-card transition-all duration-300 hover:border-accent/50 hover:shadow-2xl">
                 <iframe
                   title="CBRS Nepal location in Pokhara, Nepal"
                   src="https://www.google.com/maps?q=Pokhara,+Kaski,+Nepal&z=13&output=embed"
-                  className="h-72 w-full lg:h-80"
+                  className="h-72 w-full transition-transform duration-500 group-hover:scale-[1.02] lg:h-80"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 />
               </div>
 
               {/* Registration trust card */}
-              <div className="rounded-3xl bg-brand-band p-7 text-white">
-                <h3 className="text-lg font-bold text-white">Registered & Accountable</h3>
-                <p className="mt-2 text-sm text-white/85">
+              <div className="group rounded-3xl bg-brand-band p-7 text-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+                <h3 className="text-lg font-bold text-white transition-colors duration-300">
+                  Registered & Accountable
+                </h3>
+                <p className="mt-2 text-sm text-white/85 transition-colors duration-300 group-hover:text-white">
                   CBRS Nepal is a registered non-government organization,
                   affiliated with the Social Welfare Council of Nepal.
                 </p>
                 <dl className="mt-5 space-y-3 text-sm">
-                  <div className="flex justify-between gap-4 border-b border-white/15 pb-3">
-                    <dt className="text-white/70">DAO Kaski Reg. No.</dt>
+                  <div className="flex justify-between gap-4 border-b border-white/15 pb-3 transition-colors duration-300 group-hover:border-white/30">
+                    <dt className="text-white/70 transition-colors duration-300 group-hover:text-white/90">
+                      DAO Kaski Reg. No.
+                    </dt>
                     <dd className="font-semibold text-white">170/051</dd>
                   </div>
                   <div className="flex justify-between gap-4">
-                    <dt className="text-white/70">SWC Affiliation No.</dt>
+                    <dt className="text-white/70 transition-colors duration-300 group-hover:text-white/90">
+                      SWC Affiliation No.
+                    </dt>
                     <dd className="font-semibold text-white">2607/051</dd>
                   </div>
                 </dl>
                 <a
                   href="/donate"
-                  className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-white hover:gap-2.5"
+                  className="group/link mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-white transition-all duration-300 hover:gap-3"
                 >
-                  Support our work <ArrowRight className="size-4" />
+                  Support our work{" "}
+                  <ArrowRight className="size-4 transition-transform duration-300 group-hover/link:translate-x-1" />
                 </a>
               </div>
             </Reveal>
