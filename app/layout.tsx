@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
+import { PublicShell } from "@/components/layout/public-shell";
 import { site } from "@/lib/data/site";
 
 const inter = Inter({
@@ -56,11 +55,7 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           Skip to main content
         </a>
-        <Header />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <PublicShell>{children}</PublicShell>
       </body>
     </html>
   );
