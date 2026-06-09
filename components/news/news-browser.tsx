@@ -29,6 +29,7 @@ export function NewsBrowser({
   const [query, setQuery] = React.useState("");
   const [category, setCategory] = React.useState("All");
   const [page, setPage] = React.useState(1);
+  const [gridKey, setGridKey] = React.useState(0);
 
   const sorted = React.useMemo(
     () => items.slice().sort((a, b) => +new Date(b.date) - +new Date(a.date)),
@@ -54,12 +55,134 @@ export function NewsBrowser({
   const current = Math.min(page, totalPages);
   const rows = filtered.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE);
 
-  React.useEffect(() => setPage(1), [query, category]);
+  React.useEffect(() => { setPage(1); setGridKey((k) => k + 1); }, [query, category]);
+  React.useEffect(() => { setGridKey((k) => k + 1); }, [page]);
 
   return (
     <div>
+      <style>{`
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        @keyframes slideInBottom {
+          from {
+            opacity: 0;
+            transform: translateY(80px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .animate-slide-left {
+          animation: slideInLeft 900ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          opacity: 0;
+        }
+
+        .animate-slide-bottom {
+          animation: slideInBottom 1000ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          opacity: 0;
+        }
+
+        .animate-fade-scale {
+          animation: fadeInScale 800ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          opacity: 0;
+        }
+
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-400 { animation-delay: 400ms; }
+        .delay-500 { animation-delay: 500ms; }
+        .delay-600 { animation-delay: 600ms; }
+
+        /* Cards slide in from left on load */
+        .news-card-enter {
+          animation: slideInLeft 700ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          opacity: 0;
+        }
+
+        /* Card Hover - Black Background with White Text */
+        .news-card {
+          transition: all 800ms cubic-bezier(0.34, 1.56, 0.64, 1);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .news-card::before {
+          content: '';
+          position: absolute;
+          top: -50%;
+          right: -50%;
+          width: 200px;
+          height: 200px;
+          background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+          border-radius: 50%;
+          opacity: 0;
+          transition: opacity 800ms ease-out;
+          z-index: 10;
+          pointer-events: none;
+        }
+
+        .news-card:hover::before {
+          opacity: 1;
+        }
+
+        .news-card:hover {
+          transform: translateY(-20px) scale(1.05);
+          box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+          background: #000000;
+        }
+
+        .news-card:hover h3 {
+          color: white;
+          text-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .news-card:hover .card-excerpt {
+          color: rgba(255, 255, 255, 0.85);
+        }
+
+        .news-card:hover .card-badge {
+          background: rgba(255, 255, 255, 0.15) !important;
+          color: white !important;
+          backdrop-filter: blur(10px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .news-card:hover .card-date {
+          color: white;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .news-card:hover .card-read-more {
+          color: white;
+          font-weight: 900;
+        }
+      `}</style>
+
       {/* Featured */}
-      <article className="overflow-hidden rounded-3xl border border-border bg-surface shadow-card">
+      <article className="overflow-hidden rounded-3xl border border-border bg-surface shadow-card animate-slide-left">
         <div className="grid lg:grid-cols-2">
           <Link
             href={`/news/${featured.slug}`}
@@ -79,12 +202,12 @@ export function NewsBrowser({
               <Badge variant="accent">Featured</Badge>
             </span>
           </Link>
-          <div className="flex flex-col justify-center p-8 lg:p-10">
+          <div className="flex flex-col justify-center p-8 lg:p-10 animate-slide-left delay-100">
             <Badge variant={badgeForCategory[featured.category]} className="self-start">
               {featured.category}
             </Badge>
-            <h2 className="mt-4 text-2xl font-bold leading-tight sm:text-3xl">
-              <Link href={`/news/${featured.slug}`} className="hover:text-primary">
+            <h2 className="mt-4 text-2xl font-bold leading-tight sm:text-3xl transition-colors duration-700 hover:text-[#00A89E]">
+              <Link href={`/news/${featured.slug}`}>
                 {featured.title}
               </Link>
             </h2>
@@ -101,9 +224,9 @@ export function NewsBrowser({
       </article>
 
       {/* Controls */}
-      <div className="mt-12 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="mt-12 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between animate-slide-left delay-200">
         <div role="tablist" aria-label="Filter by category" className="flex flex-wrap gap-2">
-          {categories.map((c) => (
+          {categories.map((c, i) => (
             <button
               key={c}
               type="button"
@@ -111,17 +234,18 @@ export function NewsBrowser({
               aria-selected={category === c}
               onClick={() => setCategory(c)}
               className={cn(
-                "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                "rounded-full border px-4 py-2 text-sm font-medium transition-all duration-700 animate-fade-scale",
                 category === c
                   ? "border-primary bg-primary text-white"
                   : "border-border bg-surface text-foreground hover:border-primary/40 hover:text-primary",
               )}
+              style={{ animationDelay: `${300 + i * 100}ms` }}
             >
               {c}
             </button>
           ))}
         </div>
-        <div className="relative w-full lg:max-w-xs">
+        <div className="relative w-full lg:max-w-xs animate-slide-left delay-300">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted" aria-hidden="true" />
           <Input
             type="search"
@@ -136,16 +260,17 @@ export function NewsBrowser({
 
       {/* Grid */}
       {rows.length === 0 ? (
-        <div className="mt-10 rounded-2xl border border-dashed border-border py-16 text-center text-muted">
+        <div className="mt-10 rounded-2xl border border-dashed border-border py-16 text-center text-muted animate-slide-bottom delay-400">
           <Newspaper className="mx-auto mb-3 size-7 opacity-50" aria-hidden="true" />
           No articles found. Try a different search or category.
         </div>
       ) : (
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {rows.map((item) => (
+        <div key={gridKey} className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {rows.map((item, i) => (
             <article
               key={item.slug}
-              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
+              className="news-card news-card-enter group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-card transition-all duration-300"
+              style={{ animationDelay: `${i * 120}ms` }}
             >
               <Link
                 href={`/news/${item.slug}`}
@@ -162,25 +287,25 @@ export function NewsBrowser({
               </Link>
               <div className="flex flex-1 flex-col p-6">
                 <div className="flex items-center gap-3">
-                  <Badge variant={badgeForCategory[item.category]} size="sm">
+                  <Badge variant={badgeForCategory[item.category]} size="sm" className="card-badge">
                     {item.category}
                   </Badge>
-                  <span className="flex items-center gap-1 text-xs text-muted">
+                  <span className="card-date flex items-center gap-1 text-xs text-muted transition-colors duration-700">
                     <CalendarDays className="size-3.5" aria-hidden="true" />
                     {formatDate(item.date)}
                   </span>
                 </div>
-                <h3 className="mt-3 text-lg font-bold leading-snug text-foreground">
+                <h3 className="mt-3 text-lg font-bold leading-snug text-foreground transition-colors duration-700">
                   <Link href={`/news/${item.slug}`} className="hover:text-primary">
                     {item.title}
                   </Link>
                 </h3>
-                <p className="mt-2 line-clamp-3 flex-1 text-sm text-muted">
+                <p className="card-excerpt mt-2 line-clamp-3 flex-1 text-sm text-muted transition-colors duration-700">
                   {item.excerpt}
                 </p>
                 <Link
                   href={`/news/${item.slug}`}
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
+                  className="card-read-more mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors duration-700"
                 >
                   Read More
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -193,7 +318,7 @@ export function NewsBrowser({
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <nav aria-label="News pagination" className="mt-12 flex justify-center gap-1.5">
+        <nav aria-label="News pagination" className="mt-12 flex justify-center gap-1.5 animate-slide-bottom delay-500">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
             <button
               key={p}
