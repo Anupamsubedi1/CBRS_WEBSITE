@@ -4,7 +4,9 @@ import { Media } from "@/components/shared/media";
 import { Badge } from "@/components/ui/badge";
 import type { Program } from "@/lib/types";
 
-export function ProgramCard({ program }: { program: Program }) {
+type ProgramCardData = Pick<Program, "slug" | "title" | "category" | "excerpt" | "coverImage">;
+
+export function ProgramCard({ program }: { program: ProgramCardData }) {
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover">
       <Link
@@ -14,7 +16,7 @@ export function ProgramCard({ program }: { program: Program }) {
       >
         <div className="relative">
           <Media
-            src={program.coverImage}
+            src={program.coverImage?.url}
             alt={program.title}
             seed={program.slug}
             label={program.category}

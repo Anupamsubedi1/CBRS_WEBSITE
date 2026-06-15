@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -6,8 +7,6 @@ import {
   ArrowRight,
   Target,
   CheckCircle2,
-  FileText,
-  Download,
   Heart,
   Tag,
 } from "lucide-react";
@@ -17,9 +16,10 @@ import { Media } from "@/components/shared/media";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DonateBand } from "@/components/layout/donate-band";
-import { programs, getProgramBySlug } from "@/lib/data/programs";
+import { getPrograms, getProgramBySlug } from "@/lib/programs";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const programs = await getPrograms();
   return programs.map((p) => ({ slug: p.slug }));
 }
 
@@ -27,7 +27,7 @@ export async function generateMetadata({
   params,
 }: PageProps<"/programs/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const program = getProgramBySlug(slug);
+  const program = await getProgramBySlug(slug);
   if (!program) return { title: "Program Not Found" };
   return { title: program.title, description: program.excerpt };
 }
@@ -36,19 +36,36 @@ export default async function ProgramDetailPage({
   params,
 }: PageProps<"/programs/[slug]">) {
   const { slug } = await params;
-  const program = getProgramBySlug(slug);
+  const program = await getProgramBySlug(slug);
   if (!program) notFound();
 
-  const related = programs
+  const allPrograms = await getPrograms();
+  const related = allPrograms
     .filter((p) => p.slug !== program.slug && p.category === program.category)
     .slice(0, 2);
 
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-brand-hero text-white">
+      <section className="relative isolate overflow-hidden bg-brand-hero text-white">
+        {program.coverImage && (
+          <>
+            <Image
+              src={program.coverImage.url}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="absolute inset-0 -z-20 object-cover"
+            />
+            <div
+              className="absolute inset-0 -z-10 bg-gradient-to-t from-[#003a6f]/95 via-[#003a6f]/75 to-[#005daa]/40"
+              aria-hidden="true"
+            />
+          </>
+        )}
         <div className="pattern-grid absolute inset-0 opacity-50" aria-hidden="true" />
-        <Container className="relative py-12 lg:py-16">
+        <Container className="relative py-20 lg:py-28">
           <nav aria-label="Breadcrumb" className="mb-5 text-sm text-white/70">
             <ol className="flex flex-wrap items-center gap-1.5">
               <li><Link href="/" className="hover:text-white">Home</Link></li>
@@ -65,22 +82,6 @@ export default async function ProgramDetailPage({
           <p className="mt-5 max-w-2xl text-lg text-white/85">{program.excerpt}</p>
         </Container>
       </section>
-
-      {/* Cover */}
-      <Container className="-mt-2">
-        <Reveal className="relative z-10 -translate-y-8">
-          <Media
-            src={program.coverImage}
-            alt={program.title}
-            seed={program.slug}
-            label={program.category}
-            ratio="aspect-[21/9]"
-            rounded="rounded-3xl"
-            className="shadow-float ring-1 ring-black/5"
-            sizes="(max-width: 1280px) 100vw, 1200px"
-          />
-        </Reveal>
-      </Container>
 
       {/* Body */}
       <section className="pb-20">
@@ -137,7 +138,7 @@ export default async function ProgramDetailPage({
                   {program.gallery.map((g, i) => (
                     <Media
                       key={i}
-                      src={g.src}
+                      src={g.image?.url}
                       alt={g.caption}
                       seed={`${program.slug}-${i}`}
                       label={g.caption}
@@ -152,34 +153,6 @@ export default async function ProgramDetailPage({
 
           {/* Sidebar */}
           <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
-            {/* Documents */}
-            {program.documents.length > 0 && (
-              <div className="rounded-2xl border border-border bg-surface p-6 shadow-card">
-                <h3 className="flex items-center gap-2 text-base font-bold">
-                  <FileText className="size-5 text-primary" aria-hidden="true" />
-                  Documents
-                </h3>
-                <ul className="mt-4 space-y-2.5">
-                  {program.documents.map((d) => (
-                    <li key={d.label}>
-                      <a
-                        href={d.href}
-                        className="group flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3 transition-colors hover:border-primary/40 hover:bg-primary-50"
-                      >
-                        <span className="text-sm font-medium text-foreground">
-                          {d.label}
-                          {d.size && (
-                            <span className="block text-xs text-muted">{d.size}</span>
-                          )}
-                        </span>
-                        <Download className="size-4 shrink-0 text-muted transition-colors group-hover:text-primary" aria-hidden="true" />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
             {/* Donate CTA */}
             <div className="overflow-hidden rounded-2xl bg-accent-band p-6 text-white">
               <Heart className="size-7 fill-current" aria-hidden="true" />
@@ -224,7 +197,7 @@ export default async function ProgramDetailPage({
                   className="group flex gap-5 rounded-2xl border border-border bg-surface p-4 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover"
                 >
                   <Media
-                    src={p.coverImage}
+                    src={p.coverImage?.url}
                     alt={p.title}
                     seed={p.slug}
                     ratio="aspect-square"

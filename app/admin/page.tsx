@@ -19,6 +19,7 @@ export default async function AdminDashboardPage() {
       </header>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <DashCard title="Home Page" description="Edit every section of the homepage" href="/admin/home" />
         <DashCard title="Programs" description="Manage programs and activities" href="/admin/programs" />
         <DashCard title="News & Events" description="Publish news, notices, and events" href="/admin/news" />
         <DashCard title="Gallery" description="Upload and organise gallery images" href="/admin/gallery" />

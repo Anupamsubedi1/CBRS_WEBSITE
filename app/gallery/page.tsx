@@ -4,7 +4,7 @@ import { PageHero } from "@/components/shared/page-hero";
 import { Reveal } from "@/components/shared/reveal";
 import { GalleryGrid } from "@/components/gallery/gallery-grid";
 import { DonateBand } from "@/components/layout/donate-band";
-import { gallery, galleryCategories } from "@/lib/data/gallery";
+import { getGalleryItems, getGalleryCategories } from "@/lib/gallery";
 
 export const metadata: Metadata = {
   title: "Gallery",
@@ -12,13 +12,18 @@ export const metadata: Metadata = {
     "Moments from CBRS Nepal's work — rehabilitation, inclusive education, livelihoods, community development and events across Gandaki Province.",
 };
 
-const stats = [
-  { value: `${gallery.length}+`, label: "Photos" },
-  { value: `${galleryCategories.length}`, label: "Categories" },
-  { value: "30+", label: "Years of Stories" },
-];
+export default async function GalleryPage() {
+  const [gallery, galleryCategories] = await Promise.all([
+    getGalleryItems(),
+    getGalleryCategories(),
+  ]);
 
-export default function GalleryPage() {
+  const stats = [
+    { value: `${gallery.length}+`, label: "Photos" },
+    { value: `${galleryCategories.length}`, label: "Categories" },
+    { value: "30+", label: "Years of Stories" },
+  ];
+
   return (
     <>
       <PageHero
@@ -74,7 +79,7 @@ export default function GalleryPage() {
           <Reveal delay={0.06}>
             <div className="overflow-hidden rounded-3xl border border-border bg-white shadow-card transition-all duration-300 hover:shadow-2xl">
               <div className="p-6 sm:p-8 lg:p-10">
-                <GalleryGrid items={gallery} categories={[...galleryCategories]} />
+                <GalleryGrid items={gallery} categories={["All", ...galleryCategories]} />
               </div>
             </div>
           </Reveal>

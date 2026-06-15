@@ -2,26 +2,16 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import {
-  HandHeart,
-  GraduationCap,
-  Briefcase,
-  Users,
-  Heart,
-  ArrowRight,
-} from "lucide-react";
+import { Heart, ArrowRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
+import { ThemeIcon } from "@/components/shared/icon";
+import type { HomeHero } from "@/lib/types";
 
-/** Four floating service cards — icon tint matches the reference (2 blue, 2 teal). */
-const pillars = [
-  { icon: HandHeart, label: "Rehabilitation Services", tint: "bg-primary" },
-  { icon: GraduationCap, label: "Inclusive Education", tint: "bg-primary" },
-  { icon: Briefcase, label: "Livelihood Development", tint: "bg-accent" },
-  { icon: Users, label: "Community Empowerment", tint: "bg-accent" },
-];
+/** Alternating tints for the floating service cards (2 blue, 2 teal). */
+const TINTS = ["bg-primary", "bg-primary", "bg-accent", "bg-accent"];
 
-export function Hero() {
+export function Hero({ content }: { content: HomeHero }) {
   const reduce = useReducedMotion();
   const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -41,7 +31,7 @@ export function Hero() {
       <div className="hero-fallback absolute inset-0 -z-30" aria-hidden="true" />
       {/* 2 · Hero photograph — optimized, object-fit: cover, focal point on subject */}
       <Image
-        src="/cbrs_hero_background.png"
+        src={content.image?.url ?? "/cbrs_hero_background.png"}
         alt="A CBRS Nepal facilitator supporting a smiling boy who uses a wheelchair, surrounded by community members in a Nepali village"
         fill
         priority
@@ -60,32 +50,30 @@ export function Hero() {
             {...rise(0)}
             className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white shadow-md"
           >
-            Working with and for People with Disabilities
+            {content.badge}
           </motion.span>
 
           <motion.h1
             {...rise(0.08)}
             className="mt-6 text-[2.6rem] font-extrabold leading-[1.06] tracking-tight text-white sm:text-5xl lg:text-[3.5rem]"
           >
-            Building an Inclusive Society Where Every Person Can Live with{" "}
-            <span className="text-accent">Dignity and Opportunity</span>
+            {content.headingMain}{" "}
+            <span className="text-accent">{content.headingHighlight}</span>
           </motion.h1>
 
           <motion.p
             {...rise(0.16)}
             className="mt-6 max-w-xl text-lg leading-relaxed text-white/85"
           >
-            Empowering people with disabilities and marginalized communities
-            through rehabilitation, education, livelihood opportunities, rights
-            advocacy, and community development.
+            {content.description}
           </motion.p>
 
           <motion.div {...rise(0.24)} className="mt-9 flex flex-wrap gap-4">
-            <Button href="/donate" variant="accent" size="lg">
-              <Heart className="fill-current" /> Donate Now
+            <Button href={content.ctaPrimaryHref} variant="accent" size="lg">
+              <Heart className="fill-current" /> {content.ctaPrimaryLabel}
             </Button>
-            <Button href="/programs" variant="outline-white" size="lg">
-              Explore Programs <ArrowRight />
+            <Button href={content.ctaSecondaryHref} variant="outline-white" size="lg">
+              {content.ctaSecondaryLabel} <ArrowRight />
             </Button>
           </motion.div>
 
@@ -94,13 +82,13 @@ export function Hero() {
             {...rise(0.34)}
             className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:hidden"
           >
-            {pillars.map(({ icon: Icon, label, tint }) => (
+            {content.pillars.map(({ icon, label }, i) => (
               <li
                 key={label}
                 className="flex flex-col items-center gap-2.5 rounded-2xl bg-white px-3 py-4 text-center shadow-float"
               >
-                <span className={`grid size-11 place-items-center rounded-full ${tint} text-white`}>
-                  <Icon className="size-5" aria-hidden="true" />
+                <span className={`grid size-11 place-items-center rounded-full ${TINTS[i % TINTS.length]} text-white`}>
+                  <ThemeIcon name={icon} className="size-5" />
                 </span>
                 <span className="text-xs font-semibold leading-tight text-foreground">
                   {label}
@@ -127,13 +115,13 @@ export function Hero() {
                 })}
             className="pointer-events-auto absolute bottom-0 right-0 flex translate-y-1/3 gap-4"
           >
-            {pillars.map(({ icon: Icon, label, tint }) => (
+            {content.pillars.map(({ icon, label }, i) => (
               <li
                 key={label}
                 className="flex w-[10.75rem] flex-col items-center gap-3 rounded-2xl bg-white px-4 py-6 text-center shadow-float"
               >
-                <span className={`grid size-12 place-items-center rounded-full ${tint} text-white`}>
-                  <Icon className="size-6" aria-hidden="true" />
+                <span className={`grid size-12 place-items-center rounded-full ${TINTS[i % TINTS.length]} text-white`}>
+                  <ThemeIcon name={icon} className="size-6" />
                 </span>
                 <span className="text-sm font-semibold leading-tight text-foreground">
                   {label}

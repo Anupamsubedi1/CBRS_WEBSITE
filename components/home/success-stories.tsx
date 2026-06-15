@@ -5,10 +5,10 @@ import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Quote, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { Media } from "@/components/shared/media";
-import { successStories } from "@/lib/data/impact";
+import type { HomeSuccessStory } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export function SuccessStories() {
+export function SuccessStories({ stories: successStories }: { stories: HomeSuccessStory[] }) {
   const [index, setIndex] = React.useState(0);
   const reduce = useReducedMotion();
   const count = successStories.length;
@@ -20,10 +20,12 @@ export function SuccessStories() {
 
   // Auto-advance, paused for reduced-motion users.
   React.useEffect(() => {
-    if (reduce) return;
+    if (reduce || count === 0) return;
     const t = setInterval(() => setIndex((i) => (i + 1) % count), 6500);
     return () => clearInterval(t);
   }, [reduce, count]);
+
+  if (count === 0) return null;
 
   const story = successStories[index];
 
@@ -55,6 +57,7 @@ export function SuccessStories() {
               </p>
               <footer className="mt-5 flex items-center gap-3">
                 <Media
+                  src={story.photo?.url}
                   alt={`Portrait of ${story.name}`}
                   seed={story.id}
                   ratio="aspect-square"

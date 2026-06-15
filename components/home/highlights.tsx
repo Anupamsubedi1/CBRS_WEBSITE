@@ -6,8 +6,8 @@ import { Media } from "@/components/shared/media";
 import { Badge } from "@/components/ui/badge";
 import { SuccessStories } from "@/components/home/success-stories";
 import { news } from "@/lib/data/news";
-import { gallery } from "@/lib/data/gallery";
 import { formatDate } from "@/lib/utils";
+import type { GalleryItem, HomeSuccessStory } from "@/lib/types";
 
 function LatestNews() {
   const latest = news
@@ -62,12 +62,11 @@ function LatestNews() {
   );
 }
 
-function GalleryPreview() {
-  const items = gallery.slice(0, 6);
+function GalleryPreview({ items }: { items: GalleryItem[] }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-bold text-foreground">Gallery</h3>
+        <h3 className="text-xl font-bold text-foreground">Latest Photos</h3>
         <Link
           href="/gallery"
           className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
@@ -84,7 +83,7 @@ function GalleryPreview() {
         {items.map((g) => (
           <Media
             key={g.id}
-            src={g.src}
+            src={g.image?.url}
             alt={g.title}
             seed={g.id}
             ratio="aspect-square"
@@ -97,15 +96,21 @@ function GalleryPreview() {
   );
 }
 
-export function Highlights() {
+export function Highlights({
+  successStories,
+  galleryItems,
+}: {
+  successStories: HomeSuccessStory[];
+  galleryItems: GalleryItem[];
+}) {
   return (
     <section className="bg-white py-20 lg:py-24" aria-label="Stories, news and gallery">
       <Container>
         <Reveal>
           <div className="grid gap-10 lg:grid-cols-3">
-            <SuccessStories />
+            <SuccessStories stories={successStories} />
             <LatestNews />
-            <GalleryPreview />
+            <GalleryPreview items={galleryItems} />
           </div>
         </Reveal>
       </Container>

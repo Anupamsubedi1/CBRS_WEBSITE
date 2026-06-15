@@ -4,22 +4,22 @@ import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/shared/reveal";
 import { ThemeIcon } from "@/components/shared/icon";
-import { themes } from "@/lib/data/themes";
+import type { HomeThemesSection } from "@/lib/types";
 
-export function ThemesSection() {
+export function ThemesSection({ content }: { content: HomeThemesSection }) {
   return (
     <section className="bg-white py-20 lg:py-24" aria-labelledby="themes">
       <Container>
         <Reveal>
           <SectionHeading
-            eyebrow="What We Do"
-            title={<span id="themes">Our Themes of Work</span>}
-            description="Six interconnected themes shape every program we run — each one a step toward a more inclusive, dignified Nepal."
+            eyebrow={content.eyebrow}
+            title={<span id="themes">{content.title}</span>}
+            description={content.description}
           />
         </Reveal>
 
         <StaggerGroup className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {themes.map((theme) => (
+          {content.items.map((theme) => (
             <StaggerItem key={theme.slug}>
               <Link
                 href={`/about/cbrs-nepal#${theme.slug}`}
