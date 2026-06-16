@@ -1,14 +1,16 @@
 import Image from "next/image";
 import { QrCode } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { bankQr } from "@/lib/data/donation";
+import { getDonationContent } from "@/lib/donation";
 
 /**
  * Bank-account QR card for the right side of page banners. Reads the single
- * admin-managed source in `lib/data/donation.ts`; shows a branded placeholder
- * until a real QR image is uploaded, so banners never break.
+ * admin-managed Donation document; shows a branded placeholder until a real QR
+ * image is uploaded, so banners never break.
  */
-export function BankQR({ className }: { className?: string }) {
+export async function BankQR({ className }: { className?: string }) {
+  const { bankQr } = await getDonationContent();
+
   return (
     <div
       className={cn(
@@ -19,7 +21,7 @@ export function BankQR({ className }: { className?: string }) {
       <div className="relative grid aspect-square w-full place-items-center overflow-hidden rounded-xl bg-primary-50">
         {bankQr.image ? (
           <Image
-            src={bankQr.image}
+            src={bankQr.image.url}
             alt="CBRS Nepal bank account QR code for donations"
             fill
             sizes="176px"

@@ -6,7 +6,8 @@ import { Reveal } from "@/components/shared/reveal";
 import { NewsBrowser } from "@/components/news/news-browser";
 import { DonateBand } from "@/components/layout/donate-band";
 import { Button } from "@/components/ui/button";
-import { news, newsCategories } from "@/lib/data/news";
+import { getNews } from "@/lib/news";
+import { newsCategories } from "@/lib/data/news";
 
 export const metadata: Metadata = {
   title: "News & Notices",
@@ -14,7 +15,9 @@ export const metadata: Metadata = {
     "Latest news, notices and events from CBRS Nepal, including programs, awareness campaigns, vacancies and announcements.",
 };
 
-export default function NewsPage() {
+export default async function NewsPage() {
+  const news = await getNews();
+
   return (
     <>
       <PageHero

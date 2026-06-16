@@ -15,7 +15,7 @@ import { ThemeIcon } from "@/components/shared/icon";
 import type { IconName } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { site } from "@/lib/data/site";
-import { paymentMethods } from "@/lib/data/donation";
+import { getDonationContent } from "@/lib/donation";
 
 export const metadata: Metadata = {
   title: "Donate",
@@ -46,13 +46,15 @@ const impactItems: { t: string; d: string; icon: IconName }[] = [
   },
 ];
 
-export default function DonatePage() {
+export default async function DonatePage() {
+  const donation = await getDonationContent();
+
   return (
     <>
       <PageHero
-        eyebrow="Stand With Us"
-        title="Your Support Changes Lives"
-        description="Every contribution helps a person with a disability gain therapy, education, skills and dignity. Give with confidence to a registered organization."
+        eyebrow={donation.hero.eyebrow}
+        title={donation.hero.title}
+        description={donation.hero.description}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Donation" }]}
       />
 
@@ -61,23 +63,14 @@ export default function DonatePage() {
         <Container>
           <div className="grid items-start gap-12 lg:grid-cols-2">
             <Reveal>
-              <span className="eyebrow text-accent">Why Give</span>
+              <span className="eyebrow text-accent">{donation.whyGive.eyebrow}</span>
               <h2 className="mt-3 text-3xl font-bold text-foreground sm:text-4xl">
-                Turning compassion into opportunity
+                {donation.whyGive.title}
               </h2>
               <div className="mt-5 space-y-4 text-base leading-relaxed text-muted">
-                <p>
-                  CBRS Nepal works with and for people with disabilities and
-                  marginalized communities across Gandaki Province. Your
-                  donation supports home-based rehabilitation, assistive
-                  devices, inclusive education, livelihood training and rights
-                  advocacy.
-                </p>
-                <p>
-                  We are a registered non-government organization affiliated
-                  with the Social Welfare Council of Nepal, so you can give
-                  knowing your gift reaches the people who need it most.
-                </p>
+                {donation.whyGive.paragraphs.map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
               </div>
               <div className="mt-7 flex flex-wrap gap-3">
                 <span className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-2 text-sm font-semibold text-accent">
@@ -126,9 +119,9 @@ export default function DonatePage() {
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="Ways to Give"
-              title="How You Can Donate"
-              description="Send your gift through a digital wallet, or contact our office for bank transfer and partnership details."
+              eyebrow={donation.waysToGive.eyebrow}
+              title={donation.waysToGive.title}
+              description={donation.waysToGive.description}
             />
           </Reveal>
 
@@ -144,7 +137,7 @@ export default function DonatePage() {
                   Send your donation to CBRS Nepal using eSewa or Khalti.
                 </p>
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                  {([paymentMethods.esewa, paymentMethods.khalti] as const).map(
+                  {donation.paymentMethods.map(
                     (m) => (
                       <div
                         key={m.label}

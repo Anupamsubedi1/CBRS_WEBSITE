@@ -9,8 +9,7 @@ import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ImagePicker } from "@/components/admin/image-picker";
 import { saveGalleryAction } from "@/app/actions/gallery";
-import { programs } from "@/lib/data/programs";
-import type { GalleryItem } from "@/lib/types";
+import type { GalleryItem, Program } from "@/lib/types";
 
 const SPAN_OPTIONS: { value: NonNullable<GalleryItem["span"]>; label: string }[] = [
   { value: "normal", label: "Normal" },
@@ -25,9 +24,11 @@ function newId() {
 export function GalleryEditor({
   initialItems,
   initialCategories,
+  programs,
 }: {
   initialItems: GalleryItem[];
   initialCategories: string[];
+  programs: Pick<Program, "slug" | "title">[];
 }) {
   const [items, setItems] = React.useState<GalleryItem[]>(initialItems);
   const [categories, setCategories] = React.useState<string[]>(initialCategories);

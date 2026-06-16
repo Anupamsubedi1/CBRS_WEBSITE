@@ -8,7 +8,7 @@ import { Media } from "@/components/shared/media";
 import { Badge } from "@/components/ui/badge";
 import { MembersTable } from "@/components/team/members-table";
 import { DonateBand } from "@/components/layout/donate-band";
-import { boardMembers, advisors, generalMembers } from "@/lib/data/team";
+import { getTeam } from "@/lib/team";
 
 export const metadata: Metadata = {
   title: "Our Team",
@@ -16,7 +16,9 @@ export const metadata: Metadata = {
     "Meet the people behind CBRS Nepal: our board of directors, advisors, general members and volunteers working for inclusion and dignity.",
 };
 
-export default function OurTeamPage() {
+export default async function OurTeamPage() {
+  const { board: boardMembers, advisors, generalMembers } = await getTeam();
+
   return (
     <>
       <PageHero
@@ -57,7 +59,7 @@ export default function OurTeamPage() {
                 <article className="group h-full overflow-hidden rounded-3xl border border-border bg-surface shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-card-hover">
                   <div className="overflow-hidden">
                     <Media
-                      src={m.photo}
+                      src={m.photo?.url}
                       alt={`Portrait of ${m.name}`}
                       seed={m.id}
                       ratio="aspect-[4/3]"
@@ -121,7 +123,7 @@ export default function OurTeamPage() {
               <StaggerItem key={a.id} className="h-full">
                 <article className="flex h-full flex-col items-center rounded-3xl border border-border bg-surface p-6 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-card-hover">
                   <Media
-                    src={a.photo}
+                    src={a.photo?.url}
                     alt={`Portrait of ${a.name}`}
                     seed={a.id}
                     ratio="aspect-square"

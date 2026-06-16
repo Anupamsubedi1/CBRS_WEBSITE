@@ -60,7 +60,8 @@ export interface NewsItem {
   date: string; // ISO
   excerpt: string;
   body: string[];
-  coverImage?: string;
+  /** Cloudinary cover image, uploaded via the admin panel; null until set. */
+  coverImage: CloudinaryImage | null;
   author?: string;
   featured?: boolean;
 }
@@ -86,7 +87,8 @@ export interface BoardMember {
   position: string;
   ward: string;
   contact: string;
-  photo?: string;
+  /** Cloudinary portrait, uploaded via the admin panel; null until set. */
+  photo?: CloudinaryImage | null;
 }
 
 export interface Advisor {
@@ -95,7 +97,8 @@ export interface Advisor {
   position: string;
   expertise: string;
   contact: string;
-  photo?: string;
+  /** Cloudinary portrait, uploaded via the admin panel; null until set. */
+  photo?: CloudinaryImage | null;
 }
 
 export interface GeneralMember {
@@ -124,6 +127,36 @@ export interface SuccessStory {
 export interface CloudinaryImage {
   url: string;
   publicId: string;
+}
+
+/** A digital-wallet payment method shown on the Donation page (e.g. eSewa, Khalti). */
+export interface PaymentMethod {
+  label: string;
+  id: string;
+  name: string;
+  /** Brand colour used as the card accent. */
+  color: string;
+}
+
+/**
+ * Full editable content model for the public Donation page (`/donate`) and the
+ * bank QR shown on every inner-page banner. Managed via `/admin/donation`
+ * (Donation = "Admin + QR" in the page spec).
+ */
+export interface DonationContent {
+  hero: { eyebrow: string; title: string; description: string };
+  whyGive: { eyebrow: string; title: string; paragraphs: string[] };
+  waysToGive: { eyebrow: string; title: string; description: string };
+  paymentMethods: PaymentMethod[];
+  /** Bank-account QR (uploaded image) shown on the donate page and page banners. */
+  bankQr: { image: CloudinaryImage | null; caption: string; accountName: string };
+}
+
+/** Aggregate of the three Our Team rosters, managed via `/admin/team`. */
+export interface TeamContent {
+  board: BoardMember[];
+  advisors: Advisor[];
+  generalMembers: GeneralMember[];
 }
 
 export interface HeroPillar {

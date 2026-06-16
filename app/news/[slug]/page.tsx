@@ -8,10 +8,11 @@ import { Media } from "@/components/shared/media";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DonateBand } from "@/components/layout/donate-band";
-import { news, getNewsBySlug } from "@/lib/data/news";
+import { getNews, getNewsBySlug } from "@/lib/news";
 import { formatDate } from "@/lib/utils";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const news = await getNews();
   return news.map((n) => ({ slug: n.slug }));
 }
 
@@ -19,7 +20,7 @@ export async function generateMetadata({
   params,
 }: PageProps<"/news/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const item = getNewsBySlug(slug);
+  const item = await getNewsBySlug(slug);
   if (!item) return { title: "Article Not Found" };
   return { title: item.title, description: item.excerpt };
 }
@@ -28,12 +29,11 @@ export default async function NewsDetailPage({
   params,
 }: PageProps<"/news/[slug]">) {
   const { slug } = await params;
-  const item = getNewsBySlug(slug);
+  const item = await getNewsBySlug(slug);
   if (!item) notFound();
 
-  const more = news
+  const more = (await getNews())
     .filter((n) => n.slug !== item.slug)
-    .sort((a, b) => +new Date(b.date) - +new Date(a.date))
     .slice(0, 3);
 
   return (
@@ -87,7 +87,7 @@ export default async function NewsDetailPage({
           <Reveal>
             <div className="overflow-hidden rounded-3xl shadow-card transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
               <Media
-                src={item.coverImage}
+                src={item.coverImage?.url}
                 alt={item.title}
                 seed={item.slug}
                 label={item.category}
@@ -153,7 +153,7 @@ export default async function NewsDetailPage({
                     className="block overflow-hidden"
                   >
                     <Media
-                      src={n.coverImage}
+                      src={n.coverImage?.url}
                       alt={n.title}
                       seed={n.slug}
                       ratio="aspect-[16/10]"

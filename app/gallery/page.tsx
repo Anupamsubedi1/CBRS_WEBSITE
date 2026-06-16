@@ -6,7 +6,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { GalleryGrid } from "@/components/gallery/gallery-grid";
 import { DonateBand } from "@/components/layout/donate-band";
-import { gallery, galleryCategories } from "@/lib/data/gallery";
+import { getGalleryItems, getGalleryCategories } from "@/lib/gallery";
 
 export const metadata: Metadata = {
   title: "Gallery",
@@ -14,7 +14,12 @@ export const metadata: Metadata = {
     "Moments from CBRS Nepal's work in rehabilitation, inclusive education, livelihoods and community development across Gandaki Province.",
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const [gallery, galleryCategories] = await Promise.all([
+    getGalleryItems(),
+    getGalleryCategories(),
+  ]);
+
   return (
     <>
       <PageHero
