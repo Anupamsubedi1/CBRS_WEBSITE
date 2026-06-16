@@ -58,12 +58,20 @@ export function Hero() {
             {...rise(0.08)}
             className="font-extrabold leading-[1.12] tracking-tight text-white text-[clamp(1.75rem,4vw,2.75rem)]"
           >
-            Building an <br className="hidden sm:block" />
-            Inclusive Society Where <br className="hidden sm:block" />
-            Every Person Can Live with <br className="hidden sm:block" />
+            Building an{" "}
+            <br className="hidden sm:block" />
+            Inclusive Society Where{" "}
+            <br className="hidden sm:block" />
+            Every Person Can Live with{" "}
+            <br className="hidden sm:block" />
             <Typewriter
-              text="Dignity and Opportunity"
-              className="text-[#08c6b9] relative inline-block after:absolute after:inset-0 after:-z-10 after:bg-black/40 after:blur-md after:scale-110"
+              text={[
+                "Dignity and Opportunity",
+                "Community-led inclusion",
+                "Equal opportunity care",
+                "Sustainable life empowerment",
+              ]}
+              className="text-accent"
             />
           </motion.h1>
 

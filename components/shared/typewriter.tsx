@@ -4,7 +4,8 @@ import * as React from "react";
 import { useReducedMotion } from "framer-motion";
 
 interface TypewriterProps {
-  text: string;
+  /** A single phrase, or several phrases to cycle through in a loop. */
+  text: string | string[];
   className?: string;
   /** ms per character while typing */
   typeSpeed?: number;
@@ -17,8 +18,9 @@ interface TypewriterProps {
 }
 
 /**
- * Loops a typewriter effect: types the text out, holds, deletes, and repeats,
- * with a blinking caret. Users who prefer reduced motion get the static text.
+ * Loops a typewriter effect: types a phrase out, holds, deletes, then moves on
+ * to the next phrase and repeats forever, with a blinking caret. When several
+ * phrases are given they cycle in order. Reduced-motion users get static text.
  */
 export function Typewriter({
   text,
@@ -29,39 +31,60 @@ export function Typewriter({
   holdAfterDelete = 600,
 }: TypewriterProps) {
   const reduce = useReducedMotion();
+  const phrases = React.useMemo(
+    () => (Array.isArray(text) ? text : [text]),
+    [text],
+  );
+
+  const [index, setIndex] = React.useState(0);
   const [count, setCount] = React.useState(0);
   const [deleting, setDeleting] = React.useState(false);
+
+  const current = phrases[index] ?? "";
 
   React.useEffect(() => {
     if (reduce) return;
 
     let delay: number;
     if (!deleting) {
-      delay = count < text.length ? typeSpeed : holdAfterType;
+      delay = count < current.length ? typeSpeed : holdAfterType;
     } else {
       delay = count > 0 ? deleteSpeed : holdAfterDelete;
     }
 
     const id = setTimeout(() => {
       if (!deleting) {
-        if (count < text.length) setCount((c) => c + 1);
+        if (count < current.length) setCount((c) => c + 1);
         else setDeleting(true);
+      } else if (count > 0) {
+        setCount((c) => c - 1);
       } else {
-        if (count > 0) setCount((c) => c - 1);
-        else setDeleting(false);
+        // Fully deleted — advance to the next phrase and start typing it.
+        setDeleting(false);
+        setIndex((i) => (i + 1) % phrases.length);
       }
     }, delay);
 
     return () => clearTimeout(id);
-  }, [count, deleting, reduce, text, typeSpeed, deleteSpeed, holdAfterType, holdAfterDelete]);
+  }, [
+    count,
+    deleting,
+    reduce,
+    current,
+    phrases.length,
+    typeSpeed,
+    deleteSpeed,
+    holdAfterType,
+    holdAfterDelete,
+  ]);
 
   if (reduce) {
-    return <span className={className}>{text}</span>;
+    return <span className={className}>{phrases[0]}</span>;
   }
 
   return (
-    <span className={className} aria-label={text}>
-      <span aria-hidden="true">{text.slice(0, count)}</span>
+    <span className={className} aria-label={current}>
+      <span aria-hidden="true">{current.slice(0, count)}</span>
       <span className="typewriter-caret" aria-hidden="true" />
     </span>
   );
