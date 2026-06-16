@@ -23,7 +23,7 @@ export function Hero() {
   return (
     /* The hero fills exactly the viewport below the header (never taller).
        The service cards now live in their own section just below the hero. */
-    <section className="relative isolate flex min-h-[calc(100svh-var(--header-h))] w-full flex-col overflow-hidden">
+    <section className="relative isolate flex min-h-[78svh] w-full flex-col overflow-hidden lg:min-h-[calc(100svh-var(--header-h)-7rem)]">
       {/* ---- Background layers ---- */}
       {/* 1 · Brand-primary fallback (shown if the photo is unavailable) */}
       <div className="hero-fallback absolute inset-0 -z-30" aria-hidden="true" />
