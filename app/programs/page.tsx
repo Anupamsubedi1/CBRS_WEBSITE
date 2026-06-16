@@ -5,7 +5,8 @@ import { PageHero, HeroChip } from "@/components/shared/page-hero";
 import { Reveal } from "@/components/shared/reveal";
 import { ProgramsGrid } from "@/components/programs/programs-grid";
 import { DonateBand } from "@/components/layout/donate-band";
-import { programs } from "@/lib/data/programs";
+import { getPrograms } from "@/lib/programs";
+import { getProgramsPageContent } from "@/lib/programs-page";
 
 export const metadata: Metadata = {
   title: "Programs",
@@ -13,13 +14,18 @@ export const metadata: Metadata = {
     "Explore CBRS Nepal's programs across rehabilitation, education, livelihood, rights and community development, changing lives across Gandaki Province.",
 };
 
-export default function ProgramsPage() {
+export default async function ProgramsPage() {
+  const [programs, hero] = await Promise.all([
+    getPrograms(),
+    getProgramsPageContent(),
+  ]);
+
   return (
     <>
       <PageHero
-        eyebrow="Our Work"
-        title="Programs That Change Lives"
-        description="From home-based therapy to inclusive classrooms and sustainable livelihoods, our work turns rights into reality."
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        description={hero.description}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Programs" }]}
         image={{ src: "/banner.jpg" }}
       >

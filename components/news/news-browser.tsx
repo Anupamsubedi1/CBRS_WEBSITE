@@ -91,7 +91,7 @@ export function NewsBrowser({
             <div className="grid sm:grid-cols-2">
               <div className="relative overflow-hidden">
                 <Media
-                  src={featured.coverImage}
+                  src={featured.coverImage?.url}
                   alt={featured.title}
                   seed={featured.slug}
                   ratio="aspect-[16/10] sm:aspect-auto sm:h-full"
@@ -198,7 +198,7 @@ export function NewsBrowser({
                   className="relative block overflow-hidden rounded-2xl"
                 >
                   <Media
-                    src={item.coverImage}
+                    src={item.coverImage?.url}
                     alt={item.title}
                     seed={item.slug}
                     ratio="aspect-[16/10]"

@@ -3,13 +3,18 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getAdminId } from "@/app/actions/auth";
 import { getGalleryItems, getGalleryCategories } from "@/lib/gallery";
+import { getPrograms } from "@/lib/programs";
 import { GalleryEditor } from "./_components/gallery-editor";
 
 export default async function AdminGalleryPage() {
   const adminId = await getAdminId();
   if (!adminId) redirect("/admin/login");
 
-  const [items, categories] = await Promise.all([getGalleryItems(), getGalleryCategories()]);
+  const [items, categories, programs] = await Promise.all([
+    getGalleryItems(),
+    getGalleryCategories(),
+    getPrograms(),
+  ]);
 
   return (
     <div className="mx-auto max-w-5xl p-8">
@@ -26,7 +31,7 @@ export default async function AdminGalleryPage() {
         </p>
       </header>
 
-      <GalleryEditor initialItems={items} initialCategories={categories} />
+      <GalleryEditor initialItems={items} initialCategories={categories} programs={programs} />
     </div>
   );
 }

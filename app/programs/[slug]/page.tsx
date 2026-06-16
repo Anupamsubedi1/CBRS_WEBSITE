@@ -15,10 +15,11 @@ import { Media } from "@/components/shared/media";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DonateBand } from "@/components/layout/donate-band";
-import { programs, getProgramBySlug } from "@/lib/data/programs";
-import { galleryForProgram } from "@/lib/data/gallery";
+import { getPrograms, getProgramBySlug } from "@/lib/programs";
+import { getGalleryItems } from "@/lib/gallery";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const programs = await getPrograms();
   return programs.map((p) => ({ slug: p.slug }));
 }
 
@@ -26,7 +27,7 @@ export async function generateMetadata({
   params,
 }: PageProps<"/programs/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const program = getProgramBySlug(slug);
+  const program = await getProgramBySlug(slug);
   if (!program) return { title: "Program Not Found" };
   return { title: program.title, description: program.excerpt };
 }
@@ -35,11 +36,25 @@ export default async function ProgramDetailPage({
   params,
 }: PageProps<"/programs/[slug]">) {
   const { slug } = await params;
-  const program = getProgramBySlug(slug);
+  const program = await getProgramBySlug(slug);
   if (!program) notFound();
 
-  const photos = galleryForProgram(program.slug);
-  const related = programs
+  const [allPrograms, galleryItems] = await Promise.all([
+    getPrograms(),
+    getGalleryItems(),
+  ]);
+  // Program photos come from two places: the program's own gallery (edited in the
+  // Program editor) and any Gallery-admin photos tagged with this program. Show
+  // only entries that actually have an uploaded image.
+  const photos = [
+    ...program.gallery
+      .filter((g) => g.image)
+      .map((g, i) => ({ key: `pg-${i}`, url: g.image!.url, label: g.caption })),
+    ...galleryItems
+      .filter((g) => g.programSlug === program.slug && g.image)
+      .map((g) => ({ key: g.id, url: g.image!.url, label: g.title })),
+  ];
+  const related = allPrograms
     .filter((p) => p.slug !== program.slug)
     .slice(0, 2);
 
@@ -145,11 +160,11 @@ export default async function ProgramDetailPage({
                 <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {photos.map((g) => (
                     <Media
-                      key={g.id}
-                      src={g.image?.url}
-                      alt={g.title}
-                      seed={g.id}
-                      label={g.title}
+                      key={g.key}
+                      src={g.url}
+                      alt={g.label || program.title}
+                      seed={g.key}
+                      label={g.label}
                       ratio="aspect-square"
                       rounded="rounded-2xl"
                     />

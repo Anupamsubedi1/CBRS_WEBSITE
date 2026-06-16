@@ -4,9 +4,9 @@ import type { BoardMember, Advisor, GeneralMember } from "@/lib/types";
  * CBRS Nepal Board, Advisors and Members (term 2024–2026).
  * Source: official "Name list of Board members, Advisor and Members".
  *
- * Board portraits live in `public/team/<slug>.jpg`. When a file is missing the
- * <Media> component falls back to a branded placeholder, so the page never
- * shows a broken image.
+ * Portraits are uploaded via the admin panel (Our Team = "Content Edit") and
+ * stored in Cloudinary. Until a photo is uploaded, `<Media>` renders a branded
+ * placeholder so the page never shows a broken image.
  */
 export const boardMembers: BoardMember[] = [
   {
@@ -15,7 +15,6 @@ export const boardMembers: BoardMember[] = [
     position: "Chairperson",
     ward: "Ward No. 10",
     contact: "9856029356",
-    photo: "/team/puran-kuwar.jpg",
   },
   {
     id: "b2",
@@ -23,7 +22,6 @@ export const boardMembers: BoardMember[] = [
     position: "Vice Chairperson",
     ward: "Ward No. 16",
     contact: "9856034522",
-    photo: "/team/dilip-kumar-sharma.jpg",
   },
   {
     id: "b3",
@@ -31,7 +29,6 @@ export const boardMembers: BoardMember[] = [
     position: "General Secretary",
     ward: "Ward No. 5",
     contact: "9856022773",
-    photo: "/team/chandika-pandit.jpg",
   },
   {
     id: "b4",
@@ -39,7 +36,6 @@ export const boardMembers: BoardMember[] = [
     position: "Secretary",
     ward: "Ward No. 10",
     contact: "9856023634",
-    photo: "/team/mohan-murari-khanal.jpg",
   },
   {
     id: "b5",
@@ -47,7 +43,6 @@ export const boardMembers: BoardMember[] = [
     position: "Treasurer",
     ward: "Ward No. 14",
     contact: "9804101637",
-    photo: "/team/asha-kumari-gautam.jpg",
   },
   {
     id: "b6",
@@ -55,7 +50,6 @@ export const boardMembers: BoardMember[] = [
     position: "Member",
     ward: "Ward No. 25",
     contact: "9856065825",
-    photo: "/team/jhalak-bahadur-rana.jpg",
   },
   {
     id: "b7",
@@ -63,7 +57,6 @@ export const boardMembers: BoardMember[] = [
     position: "Member",
     ward: "Ward No. 10",
     contact: "9856021928",
-    photo: "/team/rina-palikhe.jpg",
   },
   {
     id: "b8",
@@ -71,7 +64,6 @@ export const boardMembers: BoardMember[] = [
     position: "Member",
     ward: "Ward No. 3",
     contact: "9846202758",
-    photo: "/team/sarala-das.jpg",
   },
   {
     id: "b9",
@@ -79,7 +71,6 @@ export const boardMembers: BoardMember[] = [
     position: "Member",
     ward: "Ward No. 10",
     contact: "9856027697",
-    photo: "/team/pradeep-bhakta-acharya.jpg",
   },
 ];
 
