@@ -11,7 +11,7 @@ export function Highlights() {
   const items = gallery.slice(0, 6);
 
   return (
-    <section className="bg-white py-20 lg:py-24" aria-labelledby="gallery-preview">
+    <section className="bg-white py-8 lg:py-12" aria-labelledby="gallery-preview">
       <Container>
         <Reveal>
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">

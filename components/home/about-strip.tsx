@@ -8,7 +8,7 @@ import { site } from "@/lib/data/site";
 export function AboutStrip() {
   return (
     <section
-      className="relative overflow-hidden py-20 lg:py-28"
+      className="relative overflow-hidden py-8 lg:py-12"
       aria-labelledby="who-we-are"
     >
       {/* Soft single-colour wash behind the photo composition */}

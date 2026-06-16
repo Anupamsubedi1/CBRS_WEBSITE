@@ -6,7 +6,7 @@ import { ThemesGrid } from "@/components/home/themes-grid";
 
 export function ThemesSection() {
   return (
-    <section className="overflow-hidden bg-white py-20 lg:py-28" aria-labelledby="themes">
+    <section className="overflow-hidden bg-white py-8 lg:py-12" aria-labelledby="themes">
       <Container>
         {/* Editorial two-column header */}
         <div className="grid gap-6 lg:grid-cols-[1fr_minmax(0,26rem)] lg:items-end lg:gap-16">

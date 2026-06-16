@@ -33,7 +33,7 @@ const pillars = [
 /** Standalone "what we offer" band directly below the hero. */
 export function ServicePillars() {
   return (
-    <section className="bg-background py-16 lg:py-20" aria-label="Our core services">
+    <section className="bg-background py-4 lg:py-6" aria-label="Our core services">
       <Container>
         <StaggerGroup className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4 lg:gap-6">
           {pillars.map(({ icon: Icon, label, desc, tint }) => (

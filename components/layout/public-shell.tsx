@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Header } from "./header";
 import { Footer } from "./footer";
+import { Preloader } from "./preloader";
 
 export function PublicShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -12,6 +13,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <Preloader />
       <Header />
       <main id="main" className="flex-1">
         {children}

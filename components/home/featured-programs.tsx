@@ -14,7 +14,7 @@ export function FeaturedPrograms() {
   const [lead, ...rest] = featured;
 
   return (
-    <section className="py-20 lg:py-28" aria-labelledby="featured-programs">
+    <section className="py-8 lg:py-12" aria-labelledby="featured-programs">
       <Container>
         <Reveal>
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
