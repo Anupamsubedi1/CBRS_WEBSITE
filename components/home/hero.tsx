@@ -26,7 +26,10 @@ export function Hero() {
     <section className="relative isolate flex min-h-[78svh] w-full flex-col overflow-hidden lg:min-h-[calc(100svh-var(--header-h)-7rem)]">
       {/* ---- Background layers ---- */}
       {/* 1 · Brand-primary fallback (shown if the photo is unavailable) */}
-      <div className="hero-fallback absolute inset-0 -z-30" aria-hidden="true" />
+      <div
+        className="hero-fallback absolute inset-0 -z-30"
+        aria-hidden="true"
+      />
       {/* 2 · Hero photograph — optimized, object-fit: cover, focal point on subject */}
       <Image
         src="/cbrs_heroone.jpeg"
@@ -38,8 +41,14 @@ export function Hero() {
         style={{ objectPosition: "50% 38%" }}
       />
       {/* 3 · Brand-primary overlay — vertical on mobile, left→right fade on desktop */}
-      <div className="hero-overlay-y absolute inset-0 -z-10 lg:hidden" aria-hidden="true" />
-      <div className="hero-overlay-x absolute inset-0 -z-10 hidden lg:block" aria-hidden="true" />
+      <div
+        className="hero-overlay-y absolute inset-0 -z-10 lg:hidden"
+        aria-hidden="true"
+      />
+      <div
+        className="hero-overlay-x absolute inset-0 -z-10 hidden lg:block"
+        aria-hidden="true"
+      />
 
       {/* ---- Content: copy vertically centred; extra bottom padding leaves
            room for the service cards that overlap the hero's lower edge ---- */}
@@ -49,13 +58,13 @@ export function Hero() {
             {...rise(0.08)}
             className="font-extrabold leading-[1.12] tracking-tight text-white text-[clamp(1.75rem,4vw,2.75rem)]"
           >
-            Building an{" "}
-            <br className="hidden sm:block" />
-            Inclusive Society Where{" "}
-            <br className="hidden sm:block" />
-            Every Person Can Live with{" "}
-            <br className="hidden sm:block" />
-            <Typewriter text="Dignity and Opportunity" className="text-accent" />
+            Building an <br className="hidden sm:block" />
+            Inclusive Society Where <br className="hidden sm:block" />
+            Every Person Can Live with <br className="hidden sm:block" />
+            <Typewriter
+              text="Dignity and Opportunity"
+              className="text-[#08c6b9] relative inline-block after:absolute after:inset-0 after:-z-10 after:bg-black/40 after:blur-md after:scale-110"
+            />
           </motion.h1>
 
           <motion.div
