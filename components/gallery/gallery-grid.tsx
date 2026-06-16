@@ -88,7 +88,7 @@ export function GalleryGrid({
             aria-label={`View image: ${g.title}`}
           >
             <Media
-              src={g.src}
+              src={g.image?.url}
               alt={g.title}
               seed={g.id}
               ratio={ratioForSpan[g.span ?? "normal"]}
@@ -147,7 +147,7 @@ export function GalleryGrid({
               onClick={(e) => e.stopPropagation()}
             >
               <Media
-                src={activeItem.src}
+                src={activeItem.image?.url}
                 alt={activeItem.title}
                 seed={activeItem.id}
                 ratio="aspect-[3/2]"

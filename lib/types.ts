@@ -31,17 +31,24 @@ export interface Theme {
 }
 
 export interface Program {
+  id: string;
   slug: string;
   title: string;
   category: string;
-  coverImage?: string;
+  coverImage: CloudinaryImage | null;
   excerpt: string;
   description: string;
   objectives: string[];
   activities: string[];
-  gallery: { src?: string; caption: string }[];
-  documents: { label: string; href: string; size?: string }[];
-  featured?: boolean;
+  gallery: { image: CloudinaryImage | null; caption: string }[];
+  featured: boolean;
+}
+
+/** The banner at the top of the public /programs page, managed via /admin/programs. */
+export interface ProgramsPageContent {
+  eyebrow: string;
+  title: string;
+  description: string;
 }
 
 export type NewsCategory = "News" | "Notice" | "Event" | "Story";
@@ -68,6 +75,8 @@ export interface GalleryItem {
   src?: string;
   /** Visual span hint for the masonry layout. */
   span?: "tall" | "wide" | "normal";
+  /** Used to sort newest-first for the homepage "latest photos" preview. */
+  createdAt: number;
 }
 
 export interface BoardMember {
@@ -108,4 +117,97 @@ export interface SuccessStory {
   name: string;
   role: string;
   photo?: string;
+}
+
+/** An image stored in Cloudinary — kept together so the file can be deleted on replace/remove. */
+export interface CloudinaryImage {
+  url: string;
+  publicId: string;
+}
+
+export interface HeroPillar {
+  icon: IconName;
+  label: string;
+}
+
+export interface HomeHero {
+  badge: string;
+  headingMain: string;
+  headingHighlight: string;
+  description: string;
+  image: CloudinaryImage | null;
+  ctaPrimaryLabel: string;
+  ctaPrimaryHref: string;
+  ctaSecondaryLabel: string;
+  ctaSecondaryHref: string;
+  pillars: HeroPillar[];
+}
+
+export interface HomeAbout {
+  eyebrow: string;
+  title: string;
+  paragraphs: string[];
+  image: CloudinaryImage | null;
+  badgeValue: string;
+  badgeLabel: string;
+  ctaLabel: string;
+  ctaHref: string;
+  stats: ImpactStat[];
+}
+
+export interface HomeThemeItem {
+  slug: string;
+  title: string;
+  icon: IconName;
+  description: string;
+}
+
+export interface HomeThemesSection {
+  eyebrow: string;
+  title: string;
+  description: string;
+  items: HomeThemeItem[];
+}
+
+export interface HomeImpact {
+  eyebrow: string;
+  title: string;
+  description: string;
+  ctaLabel: string;
+  ctaHref: string;
+  stats: ImpactStat[];
+}
+
+export interface HomeFeaturedPrograms {
+  eyebrow: string;
+  title: string;
+  description: string;
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+export interface HomeSuccessStory {
+  id: string;
+  quote: string;
+  name: string;
+  role: string;
+  photo: CloudinaryImage | null;
+}
+
+export interface HomeDonateBand {
+  title: string;
+  description: string;
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+/** Full editable content model for the public homepage (`/`), managed via `/admin/home`. */
+export interface HomepageContent {
+  hero: HomeHero;
+  about: HomeAbout;
+  themesSection: HomeThemesSection;
+  impact: HomeImpact;
+  featuredPrograms: HomeFeaturedPrograms;
+  successStories: HomeSuccessStory[];
+  donateBand: HomeDonateBand;
 }
