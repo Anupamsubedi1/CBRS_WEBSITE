@@ -15,10 +15,30 @@ import { Marquee } from "@/components/home/marquee";
 
 /** Four service cards — icon tint matches the reference (2 blue, 2 teal). */
 const pillars = [
-  { icon: HandHeart, label: "Rehabilitation Services", tint: "bg-primary" },
-  { icon: GraduationCap, label: "Inclusive Education", tint: "bg-primary" },
-  { icon: Briefcase, label: "Livelihood Development", tint: "bg-accent" },
-  { icon: Users, label: "Community Empowerment", tint: "bg-accent" },
+  {
+    icon: HandHeart,
+    label: "Rehabilitation Services",
+    desc: "Therapy & assistive devices",
+    tint: "bg-primary",
+  },
+  {
+    icon: GraduationCap,
+    label: "Inclusive Education",
+    desc: "Classrooms & learning support",
+    tint: "bg-primary",
+  },
+  {
+    icon: Briefcase,
+    label: "Livelihood Development",
+    desc: "Skills, training & enterprise",
+    tint: "bg-accent",
+  },
+  {
+    icon: Users,
+    label: "Community Empowerment",
+    desc: "Rights, advocacy & inclusion",
+    tint: "bg-accent",
+  },
 ];
 
 export function Hero() {
@@ -55,56 +75,64 @@ export function Hero() {
       <div className="hero-overlay-y absolute inset-0 -z-10 lg:hidden" aria-hidden="true" />
       <div className="hero-overlay-x absolute inset-0 -z-10 hidden lg:block" aria-hidden="true" />
 
-      {/* ---- Content: copy near the top (minimal gap to navbar), cards above the marquee ---- */}
-      <Container className="relative z-10 flex flex-1 flex-col justify-between gap-10 pb-7 pt-8 sm:gap-12 lg:pb-9 lg:pt-12">
-        <div className="max-w-[44rem]">
-          <motion.span
-            {...rise(0)}
-            className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white shadow-md"
-          >
-            Working with and for people with disability and development in Nepal
-          </motion.span>
+      {/* ---- Content: copy centred so navbar→copy gap equals copy→cards gap ---- */}
+      <Container className="relative z-10 flex flex-1 flex-col gap-10 pb-7 pt-10 sm:gap-12 lg:pb-9">
+        <div className="flex flex-1 flex-col justify-center">
+          <div className="max-w-[44rem]">
+            <motion.span
+              {...rise(0)}
+              className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white shadow-md"
+            >
+              Working with and for people with disability and development in Nepal
+            </motion.span>
 
-          <motion.h1
-            {...rise(0.08)}
-            className="mt-6 font-extrabold leading-[1.1] tracking-tight text-white text-[clamp(1.75rem,4vw,2.75rem)]"
-          >
-            Building an Inclusive Society Where Every Person Can Live with{" "}
-            <span className="text-accent">Dignity and Opportunity</span>
-          </motion.h1>
+            <motion.h1
+              {...rise(0.08)}
+              className="mt-6 font-extrabold leading-[1.12] tracking-tight text-white text-[clamp(1.75rem,4vw,2.75rem)]"
+            >
+              Building an{" "}
+              <br className="hidden sm:block" />
+              Inclusive Society Where{" "}
+              <br className="hidden sm:block" />
+              Every Person Can Live with{" "}
+              <br className="hidden sm:block" />
+              <span className="text-accent">Dignity and Opportunity</span>
+            </motion.h1>
 
-          <motion.div
-            {...rise(0.18)}
-            className="mt-8 flex flex-wrap items-center gap-3.5"
-          >
-            <Button href="/about/cbrs-nepal" variant="accent" size="md">
-              About Us <ArrowRight />
-            </Button>
-            <Button href="/programs" variant="outline-white" size="md">
-              Explore Programs <ArrowRight />
-            </Button>
-          </motion.div>
+            <motion.div
+              {...rise(0.18)}
+              className="mt-8 flex flex-wrap items-center gap-4"
+            >
+              <Button href="/about/cbrs-nepal" variant="accent" size="lg">
+                About Us <ArrowRight />
+              </Button>
+              <Button href="/programs" variant="outline-white" size="lg">
+                Explore Programs <ArrowRight />
+              </Button>
+            </motion.div>
+          </div>
         </div>
 
-        {/* Service cards — compact (icon + label snug, no excess space).
-            Mobile-first: 2 cols on phones, 4 across from lg. */}
+        {/* Service cards — mobile-first: 2 cols on phones, 4 across from lg.
+            Each shows a short one-line description below the label. */}
         <motion.ul
           {...rise(0.3)}
           className="grid grid-cols-2 gap-3.5 sm:gap-4 lg:grid-cols-4 lg:gap-5"
         >
-          {pillars.map(({ icon: Icon, label, tint }) => (
+          {pillars.map(({ icon: Icon, label, desc, tint }) => (
             <li
               key={label}
-              className="flex flex-col items-center gap-2.5 rounded-2xl bg-white px-3 py-4 text-center shadow-float sm:gap-3 sm:py-5 lg:rounded-3xl lg:py-6"
+              className="flex flex-col items-center gap-2.5 rounded-2xl bg-white px-4 py-6 text-center shadow-float sm:gap-3 sm:py-7 lg:rounded-3xl lg:px-5 lg:py-8"
             >
               <span
-                className={`grid size-11 place-items-center rounded-full ${tint} text-white sm:size-12 lg:size-14`}
+                className={`grid size-12 place-items-center rounded-full ${tint} text-white sm:size-14 lg:size-16`}
               >
-                <Icon className="size-5 sm:size-6 lg:size-7" aria-hidden="true" />
+                <Icon className="size-6 sm:size-7 lg:size-8" aria-hidden="true" />
               </span>
-              <span className="text-sm font-semibold leading-tight text-foreground sm:text-base">
+              <span className="text-sm font-bold leading-tight text-foreground sm:text-base lg:text-lg">
                 {label}
               </span>
+              <span className="text-xs leading-snug text-muted">{desc}</span>
             </li>
           ))}
         </motion.ul>
