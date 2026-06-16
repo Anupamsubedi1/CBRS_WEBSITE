@@ -55,7 +55,15 @@ export function Hero() {
             <br className="hidden sm:block" />
             Every Person Can Live with{" "}
             <br className="hidden sm:block" />
-            <Typewriter text="Dignity and Opportunity" className="text-accent" />
+            <Typewriter
+              text={[
+                "Dignity and Opportunity",
+                "Community-led inclusion",
+                "Equal opportunity care",
+                "Sustainable life empowerment",
+              ]}
+              className="text-accent"
+            />
           </motion.h1>
 
           <motion.div
