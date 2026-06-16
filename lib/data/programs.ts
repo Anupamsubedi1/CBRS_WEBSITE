@@ -14,15 +14,16 @@ const FEATURED = new Set([
 ]);
 
 export const programs: Program[] = themes.map((t) => ({
+  id: t.slug,
   slug: t.slug,
   title: t.title,
   category: t.title,
+  coverImage: null,
   excerpt: t.description,
   description: t.objective,
   objectives: [t.objective],
   activities: t.activities,
   gallery: [],
-  documents: [],
   featured: FEATURED.has(t.slug),
 }));
 
@@ -31,3 +32,6 @@ export function getProgramBySlug(slug: string) {
 }
 
 export const programCategories = programs.map((p) => p.category);
+
+/** Seed alias consumed by the MongoDB layer (`lib/programs.ts`). */
+export const defaultPrograms = programs;

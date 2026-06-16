@@ -9,6 +9,7 @@ import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ImagePicker } from "@/components/admin/image-picker";
 import { saveGalleryAction } from "@/app/actions/gallery";
+import { programs } from "@/lib/data/programs";
 import type { GalleryItem } from "@/lib/types";
 
 const SPAN_OPTIONS: { value: NonNullable<GalleryItem["span"]>; label: string }[] = [
@@ -132,16 +133,27 @@ export function GalleryEditor({
                 />
               </div>
               <div className="space-y-1.5">
-                <Label>Category</Label>
+                <Label>Program</Label>
                 <Select
-                  value={item.category}
-                  onChange={(e) => updateItems((d) => { d[i].category = e.target.value; })}
+                  value={item.programSlug}
+                  onChange={(e) =>
+                    updateItems((d) => {
+                      const slug = e.target.value;
+                      d[i].programSlug = slug;
+                      d[i].category =
+                        programs.find((p) => p.slug === slug)?.title ?? "";
+                    })
+                  }
                 >
-                  <option value="">Select a category</option>
-                  {Array.from(new Set([...categories, item.category].filter(Boolean))).map((cat) => (
-                    <option key={cat} value={cat}>{cat}</option>
+                  <option value="">Select a program</option>
+                  {programs.map((p) => (
+                    <option key={p.slug} value={p.slug}>{p.title}</option>
                   ))}
                 </Select>
+                <p className="text-xs text-muted">
+                  The photo appears under this program in the gallery and on the
+                  program&apos;s page.
+                </p>
               </div>
               <div className="space-y-1.5">
                 <Label>Layout span</Label>
@@ -177,7 +189,8 @@ export function GalleryEditor({
               d.unshift({
                 id: newId(),
                 title: "",
-                category: categories[0] ?? "",
+                programSlug: "",
+                category: "",
                 image: null,
                 span: "normal",
                 createdAt: Date.now(),

@@ -37,7 +37,7 @@ export function Highlights() {
                 aria-label={`${g.title} (view gallery)`}
               >
                 <Media
-                  src={g.src}
+                  src={g.image?.url}
                   alt={g.title}
                   seed={g.id}
                   ratio="aspect-square"

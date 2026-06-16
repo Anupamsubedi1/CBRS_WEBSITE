@@ -72,7 +72,8 @@ export interface GalleryItem {
   category: string;
   /** Links this photo to a program, so it appears on that program's page. */
   programSlug: string;
-  src?: string;
+  /** Cloudinary image; null until a photo is uploaded via the admin panel. */
+  image: CloudinaryImage | null;
   /** Visual span hint for the masonry layout. */
   span?: "tall" | "wide" | "normal";
   /** Used to sort newest-first for the homepage "latest photos" preview. */

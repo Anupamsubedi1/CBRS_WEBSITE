@@ -9,7 +9,7 @@ export function ProgramCard({ program }: { program: Program }) {
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-card-hover">
       <div className="relative overflow-hidden">
         <Media
-          src={program.coverImage}
+          src={program.coverImage?.url}
           alt={program.title}
           seed={program.slug}
           label={program.category}

@@ -6,8 +6,6 @@ import {
   ArrowRight,
   Target,
   CheckCircle2,
-  FileText,
-  Download,
   Heart,
   Tag,
 } from "lucide-react";
@@ -72,7 +70,7 @@ export default async function ProgramDetailPage({
       <Container className="-mt-2">
         <Reveal className="relative z-10 -translate-y-8">
           <Media
-            src={program.coverImage}
+            src={program.coverImage?.url}
             alt={program.title}
             seed={program.slug}
             label={program.category}
@@ -148,7 +146,7 @@ export default async function ProgramDetailPage({
                   {photos.map((g) => (
                     <Media
                       key={g.id}
-                      src={g.src}
+                      src={g.image?.url}
                       alt={g.title}
                       seed={g.id}
                       label={g.title}
@@ -163,34 +161,6 @@ export default async function ProgramDetailPage({
 
           {/* Sidebar */}
           <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
-            {/* Documents */}
-            {program.documents.length > 0 && (
-              <div className="rounded-2xl border border-border bg-surface p-6 shadow-card">
-                <h3 className="flex items-center gap-2 text-base font-bold">
-                  <FileText className="size-5 text-primary" aria-hidden="true" />
-                  Documents
-                </h3>
-                <ul className="mt-4 space-y-2.5">
-                  {program.documents.map((d) => (
-                    <li key={d.label}>
-                      <a
-                        href={d.href}
-                        className="group flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3 transition-colors hover:border-primary/40 hover:bg-primary-50"
-                      >
-                        <span className="text-sm font-medium text-foreground">
-                          {d.label}
-                          {d.size && (
-                            <span className="block text-xs text-muted">{d.size}</span>
-                          )}
-                        </span>
-                        <Download className="size-4 shrink-0 text-muted transition-colors group-hover:text-primary" aria-hidden="true" />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
             {/* Donate CTA */}
             <div className="overflow-hidden rounded-2xl bg-accent-band p-6 text-white">
               <Heart className="size-7 fill-current" aria-hidden="true" />
@@ -235,7 +205,7 @@ export default async function ProgramDetailPage({
                   className="group flex gap-5 rounded-2xl border border-border bg-surface p-4 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover"
                 >
                   <Media
-                    src={p.coverImage}
+                    src={p.coverImage?.url}
                     alt={p.title}
                     seed={p.slug}
                     ratio="aspect-square"

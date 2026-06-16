@@ -7,8 +7,8 @@ import { programs } from "@/lib/data/programs";
  * Filters are the program names, kept in sync automatically.
  *
  * Captions below are real CBRS activity areas taken from the organisation
- * profile. Drop real photos into `public/gallery/<folder>/` and set `src` on
- * the matching entry; until then a branded placeholder is shown.
+ * profile. Photos are uploaded via the admin panel and stored in Cloudinary;
+ * until then each item has `image: null` and a branded placeholder is shown.
  */
 const titleFor = (slug: string) =>
   programs.find((p) => p.slug === slug)?.title ?? "";
@@ -16,7 +16,6 @@ const titleFor = (slug: string) =>
 type Seed = {
   slug: string;
   title: string;
-  src?: string;
   span?: GalleryItem["span"];
 };
 
@@ -56,8 +55,9 @@ export const gallery: GalleryItem[] = seed.map((s, i) => ({
   title: s.title,
   programSlug: s.slug,
   category: titleFor(s.slug),
-  src: s.src,
+  image: null,
   span: s.span,
+  createdAt: i,
 }));
 
 export const galleryCategories: string[] = [
@@ -69,3 +69,7 @@ export const galleryCategories: string[] = [
 export function galleryForProgram(slug: string) {
   return gallery.filter((g) => g.programSlug === slug);
 }
+
+/** Seed aliases consumed by the MongoDB layer (`lib/gallery.ts`). */
+export const defaultGallery = gallery;
+export const defaultGalleryCategories = galleryCategories;

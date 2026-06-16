@@ -37,7 +37,7 @@ export function FeaturedPrograms() {
             <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-surface shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-card-hover">
               <div className="relative overflow-hidden">
                 <Media
-                  src={lead.coverImage}
+                  src={lead.coverImage?.url}
                   alt={lead.title}
                   seed={lead.slug}
                   label={lead.category}
@@ -95,7 +95,7 @@ export function FeaturedPrograms() {
                 <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-surface shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-card-hover sm:flex-row">
                   <div className="relative shrink-0 overflow-hidden sm:w-44 lg:w-40">
                     <Media
-                      src={p.coverImage}
+                      src={p.coverImage?.url}
                       alt={p.title}
                       seed={p.slug}
                       ratio="aspect-[16/9] sm:aspect-auto sm:h-full"
