@@ -2,6 +2,7 @@
 
 import crypto from "crypto";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { getDb } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/password";
 
@@ -33,7 +34,7 @@ async function ensureAdminExists() {
   });
 }
 
-export type LoginState = { error?: string; success?: boolean } | undefined;
+export type LoginState = { error?: string } | undefined;
 
 export async function login(
   _prev: LoginState,
@@ -69,7 +70,12 @@ export async function login(
     maxAge: 60 * 60 * 8, // 8 hours
   });
 
-  return { success: true };
+  // Redirect server-side so the navigation to /admin re-renders the shared
+  // admin layout with the new session cookie present. A client-side
+  // router.push would reuse the cached (unauthenticated) layout segment,
+  // flashing between the sidebar and the login form. `redirect` throws, so
+  // it must stay outside any try/catch.
+  redirect("/admin");
 }
 
 export async function logout() {
