@@ -30,17 +30,24 @@ const pillars = [
   },
 ];
 
-/** Standalone "what we offer" band directly below the hero. */
+/**
+ * "What we offer" cards — pulled up so they overlap the lower edge of the
+ * hero photo, bridging the hero into the page below (a common professional
+ * landing-page pattern) instead of sitting as a flat, separate band.
+ */
 export function ServicePillars() {
   return (
-    <section className="bg-background py-4 lg:py-6" aria-label="Our core services">
+    <section
+      className="relative z-20 -mt-20 sm:-mt-24 lg:-mt-32"
+      aria-label="Our core services"
+    >
       <Container>
         <StaggerGroup className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4 lg:gap-6">
           {pillars.map(({ icon: Icon, label, desc, tint }) => (
             <StaggerItem key={label} className="h-full">
-              <div className="group flex h-full flex-col items-center gap-4 rounded-3xl bg-surface px-5 py-9 text-center shadow-float transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover">
+              <div className="group flex h-full flex-col items-center gap-4 rounded-3xl bg-surface px-5 py-7 text-center shadow-float ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover lg:py-8">
                 <span
-                  className={`grid size-16 place-items-center rounded-full ${tint} text-white transition-transform duration-300 group-hover:scale-110 lg:size-[4.5rem]`}
+                  className={`grid size-16 place-items-center rounded-full ${tint} text-white shadow-lg transition-transform duration-300 group-hover:scale-110 lg:size-[4.5rem]`}
                 >
                   <Icon className="size-8 lg:size-9" aria-hidden="true" />
                 </span>

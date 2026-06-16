@@ -6,7 +6,6 @@ import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { Typewriter } from "@/components/shared/typewriter";
-import { Marquee } from "@/components/home/marquee";
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -42,8 +41,9 @@ export function Hero() {
       <div className="hero-overlay-y absolute inset-0 -z-10 lg:hidden" aria-hidden="true" />
       <div className="hero-overlay-x absolute inset-0 -z-10 hidden lg:block" aria-hidden="true" />
 
-      {/* ---- Content: copy vertically centred ---- */}
-      <Container className="relative z-10 flex flex-1 flex-col justify-center pb-8 pt-10">
+      {/* ---- Content: copy vertically centred; extra bottom padding leaves
+           room for the service cards that overlap the hero's lower edge ---- */}
+      <Container className="relative z-10 flex flex-1 flex-col justify-center pb-28 pt-10 lg:pb-40">
         <div className="max-w-[44rem]">
           <motion.h1
             {...rise(0.08)}
@@ -71,9 +71,6 @@ export function Hero() {
           </motion.div>
         </div>
       </Container>
-
-      {/* Marquee — part of the hero so it's visible on landing */}
-      <Marquee />
     </section>
   );
 }
