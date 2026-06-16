@@ -71,8 +71,10 @@ export function Hero() {
                 "Equal opportunity care",
                 "Sustainable life empowerment",
               ]}
-              className="text-accent"
+              className="text-[#08c6b9] relative inline-block after:absolute after:inset-0 after:-z-10 after:bg-black/40 after:blur-md after:scale-110"
+              
             />
+            
           </motion.h1>
 
           <motion.div
