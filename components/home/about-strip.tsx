@@ -28,6 +28,7 @@ export function AboutStrip() {
               rounded="rounded-3xl"
               className="shadow-card"
               sizes="(max-width: 1024px) 100vw, 50vw"
+              priority
             />
             {/* Offset secondary photo, framed like a print */}
             <div className="absolute -bottom-2 -left-2 hidden w-44 -rotate-2 overflow-hidden rounded-2xl border-[5px] border-white shadow-float sm:block lg:w-56">

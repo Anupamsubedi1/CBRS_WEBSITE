@@ -7,13 +7,13 @@ import {
   GraduationCap,
   Briefcase,
   Users,
-  Heart,
   ArrowRight,
 } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
+import { Marquee } from "@/components/home/marquee";
 
-/** Four floating service cards — icon tint matches the reference (2 blue, 2 teal). */
+/** Four service cards — icon tint matches the reference (2 blue, 2 teal). */
 const pillars = [
   { icon: HandHeart, label: "Rehabilitation Services", tint: "bg-primary" },
   { icon: GraduationCap, label: "Inclusive Education", tint: "bg-primary" },
@@ -35,13 +35,15 @@ export function Hero() {
         };
 
   return (
-    <section className="relative isolate w-full">
+    /* The hero fills exactly the viewport below the header (never taller): copy,
+       service cards AND the marquee all sit within one screen on landing. */
+    <section className="relative isolate flex min-h-[calc(100svh-var(--header-h))] w-full flex-col overflow-hidden">
       {/* ---- Background layers ---- */}
       {/* 1 · Brand-primary fallback (shown if the photo is unavailable) */}
       <div className="hero-fallback absolute inset-0 -z-30" aria-hidden="true" />
       {/* 2 · Hero photograph — optimized, object-fit: cover, focal point on subject */}
       <Image
-        src="/cbrs_hero_background.png"
+        src="/CBRS_HERO.jpeg"
         alt="A CBRS Nepal facilitator supporting a smiling boy who uses a wheelchair, surrounded by community members in a Nepali village"
         fill
         priority
@@ -53,9 +55,9 @@ export function Hero() {
       <div className="hero-overlay-y absolute inset-0 -z-10 lg:hidden" aria-hidden="true" />
       <div className="hero-overlay-x absolute inset-0 -z-10 hidden lg:block" aria-hidden="true" />
 
-      {/* ---- Content ---- */}
-      <Container className="relative flex min-h-[88vh] items-center py-20 lg:min-h-[86vh] lg:py-24">
-        <div className="max-w-[640px]">
+      {/* ---- Content: copy near the top (minimal gap to navbar), cards above the marquee ---- */}
+      <Container className="relative z-10 flex flex-1 flex-col justify-between gap-10 pb-7 pt-8 sm:gap-12 lg:pb-9 lg:pt-12">
+        <div className="max-w-[44rem]">
           <motion.span
             {...rise(0)}
             className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white shadow-md"
@@ -65,87 +67,51 @@ export function Hero() {
 
           <motion.h1
             {...rise(0.08)}
-            className="mt-6 text-[2.6rem] font-extrabold leading-[1.06] tracking-tight text-white sm:text-5xl lg:text-[3.5rem]"
+            className="mt-6 font-extrabold leading-[1.1] tracking-tight text-white text-[clamp(1.75rem,4vw,2.75rem)]"
           >
             Building an Inclusive Society Where Every Person Can Live with{" "}
             <span className="text-accent">Dignity and Opportunity</span>
           </motion.h1>
 
-          <motion.p
-            {...rise(0.16)}
-            className="mt-6 max-w-xl text-lg leading-relaxed text-white/85"
+          <motion.div
+            {...rise(0.18)}
+            className="mt-8 flex flex-wrap items-center gap-3.5"
           >
-            Empowering people with disabilities and marginalized communities
-            through rehabilitation, education, livelihood opportunities, rights
-            advocacy, and community development.
-          </motion.p>
-
-          <motion.div {...rise(0.24)} className="mt-9 flex flex-wrap gap-4">
-            <Button href="/donate" variant="accent" size="lg">
-              <Heart className="fill-current" /> Donate Now
+            <Button href="/about/cbrs-nepal" variant="accent" size="md">
+              About Us <ArrowRight />
             </Button>
-            <Button href="/programs" variant="outline-white" size="lg">
+            <Button href="/programs" variant="outline-white" size="md">
               Explore Programs <ArrowRight />
             </Button>
           </motion.div>
-
-          {/* Mobile/tablet: cards as a responsive grid below the CTAs */}
-          <motion.ul
-            {...rise(0.34)}
-            className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:hidden"
-          >
-            {pillars.map(({ icon: Icon, label, tint }) => (
-              <li
-                key={label}
-                className="flex flex-col items-center gap-3 rounded-2xl bg-white px-4 py-6 text-center shadow-float"
-              >
-                <span className={`grid size-14 place-items-center rounded-full ${tint} text-white`}>
-                  <Icon className="size-7" aria-hidden="true" />
-                </span>
-                <span className="text-sm font-semibold leading-tight text-foreground">
-                  {label}
-                </span>
-              </li>
-            ))}
-          </motion.ul>
         </div>
+
+        {/* Service cards — compact (icon + label snug, no excess space).
+            Mobile-first: 2 cols on phones, 4 across from lg. */}
+        <motion.ul
+          {...rise(0.3)}
+          className="grid grid-cols-2 gap-3.5 sm:gap-4 lg:grid-cols-4 lg:gap-5"
+        >
+          {pillars.map(({ icon: Icon, label, tint }) => (
+            <li
+              key={label}
+              className="flex flex-col items-center gap-2.5 rounded-2xl bg-white px-3 py-4 text-center shadow-float sm:gap-3 sm:py-5 lg:rounded-3xl lg:py-6"
+            >
+              <span
+                className={`grid size-11 place-items-center rounded-full ${tint} text-white sm:size-12 lg:size-14`}
+              >
+                <Icon className="size-5 sm:size-6 lg:size-7" aria-hidden="true" />
+              </span>
+              <span className="text-sm font-semibold leading-tight text-foreground sm:text-base">
+                {label}
+              </span>
+            </li>
+          ))}
+        </motion.ul>
       </Container>
 
-      {/* Desktop: 4 service cards floating centred at the bottom, overlapping the edge */}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 hidden lg:block"
-        aria-hidden="false"
-      >
-        <Container className="relative">
-          <motion.ul
-            {...(reduce
-              ? {}
-              : {
-                  initial: { opacity: 0, y: 18 },
-                  animate: { opacity: 1, y: 0 },
-                  transition: { duration: 0.6, ease, delay: 0.45 },
-                })}
-            className="pointer-events-auto absolute bottom-0 left-1/2 flex -translate-x-1/2 translate-y-1/3 gap-5"
-          >
-            {pillars.map(({ icon: Icon, label, tint }) => (
-              <li
-                key={label}
-                className="flex w-60 flex-col items-center gap-4 rounded-3xl bg-white px-6 py-9 text-center shadow-float"
-              >
-                <span className={`grid size-[4.5rem] place-items-center rounded-full ${tint} text-white`}>
-                  <Icon className="size-9" aria-hidden="true" />
-                </span>
-                <span className="text-base font-semibold leading-tight text-foreground">
-                  {label}
-                </span>
-              </li>
-            ))}
-          </motion.ul>
-        </Container>
-      </div>
-
-      {/* spacer so the floating cards clear the next section on desktop */}
-      <div className="hidden h-28 lg:block" aria-hidden="true" />
+      {/* Marquee — part of the hero so it's visible on landing */}
+      <Marquee />
     </section>
   );
 }

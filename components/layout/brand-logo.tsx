@@ -18,20 +18,20 @@ export function BrandLogo({
   href?: string | null;
 }) {
   const content = (
-    <span className={cn("flex items-center gap-2.5", className)}>
-      <span className="relative size-11 shrink-0 overflow-hidden rounded-full bg-white shadow-[0_4px_12px_-4px_rgba(0,93,170,0.6)] ring-1 ring-black/5">
+    <span className={cn("flex items-center gap-3", className)}>
+      <span className="relative size-14 shrink-0 overflow-hidden rounded-full bg-white shadow-[0_4px_12px_-4px_rgba(0,93,170,0.6)] ring-1 ring-black/5">
         <Image
           src="/cbrs_logo.jpeg"
           alt="CBRS Nepal logo"
           fill
-          sizes="44px"
+          sizes="56px"
           className="object-cover"
         />
       </span>
       <span className="flex flex-col leading-none">
         <span
           className={cn(
-            "font-display text-lg font-extrabold tracking-tight",
+            "font-display text-xl font-extrabold tracking-tight",
             tone === "light" ? "text-white" : "text-primary",
           )}
         >

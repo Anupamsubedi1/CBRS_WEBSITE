@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { PublicShell } from "@/components/layout/public-shell";
@@ -46,11 +46,22 @@ export const metadata: Metadata = {
   icons: { icon: "/cbrs_logo.jpeg", apple: "/cbrs_logo.jpeg" },
 };
 
+/* Mobile-first responsive baseline: render at the device width, not a zoomed-out
+   desktop width. (<meta name="viewport" content="width=device-width, initial-scale=1">) */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${jakarta.variable} h-full`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${inter.variable} ${jakarta.variable} h-full`}
+    >
       <body className="flex min-h-full flex-col bg-background text-foreground antialiased">
         <a href="#main" className="skip-link">
           Skip to main content

@@ -3,10 +3,10 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Menu, X, Phone, Mail, Heart } from "lucide-react";
+import { ChevronDown, Menu, X, Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navLinks, site } from "@/lib/data/site";
-import { Button } from "@/components/ui/button";
+import { DonateButton } from "@/components/shared/donate-button";
 import { BrandLogo } from "@/components/layout/brand-logo";
 
 function useActive() {
@@ -35,11 +35,13 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close menus on route change.
+  // Close menus on route change — syncing UI to the router is a valid effect.
   React.useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- intentional router→UI sync */
     setMobileOpen(false);
     setAboutOpen(false);
     setMobileAboutOpen(false);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [pathname]);
 
   // Close the About dropdown on outside click / Escape.
@@ -71,7 +73,7 @@ export function Header() {
     <header className="sticky top-0 z-50">
       {/* Utility bar */}
       <div className="hidden bg-primary text-white md:block">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 text-xs lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-[6px] py-2 text-xs lg:px-[8px]">
           <div className="flex items-center gap-5">
             <a
               href={`tel:${site.contact.phone}`}
@@ -105,7 +107,7 @@ export function Header() {
       >
         <nav
           aria-label="Primary"
-          className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 sm:px-6 lg:px-8"
+          className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-[5px] py-3 sm:px-[6px] lg:px-[8px]"
         >
           <BrandLogo />
 
@@ -186,9 +188,7 @@ export function Header() {
           </ul>
 
           <div className="flex items-center gap-2">
-            <Button href="/donate" variant="accent" size="md" className="hidden sm:inline-flex">
-              <Heart className="fill-current" /> Donate Now
-            </Button>
+            <DonateButton size="sm" className="hidden sm:inline-flex" />
 
             {/* Mobile toggle */}
             <button
@@ -263,9 +263,7 @@ export function Header() {
               ),
             )}
             <li className="mt-4">
-              <Button href="/donate" variant="accent" size="lg" className="w-full">
-                <Heart className="fill-current" /> Donate Now
-              </Button>
+              <DonateButton size="md" className="w-full justify-center" />
             </li>
           </ul>
         </div>

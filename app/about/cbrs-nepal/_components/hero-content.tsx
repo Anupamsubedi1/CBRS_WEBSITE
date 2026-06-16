@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { Heart, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DonateButton } from "@/components/shared/donate-button";
 
 export function HeroContent() {
   const reduce = useReducedMotion();
@@ -41,9 +42,7 @@ export function HeroContent() {
       </motion.p>
 
       <motion.div {...entrance(0.3)} className="mt-9 flex flex-wrap gap-4">
-        <Button href="/donate" variant="accent" size="lg">
-          <Heart className="fill-current" /> Donate Now
-        </Button>
+        <DonateButton size="lg" />
         <Button href="/programs" variant="outline-white" size="lg">
           Explore Programs <ArrowRight />
         </Button>

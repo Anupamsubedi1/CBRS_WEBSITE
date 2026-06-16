@@ -104,8 +104,11 @@ export function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/10">
         <Container className="flex flex-col items-center justify-between gap-2 py-5 text-xs text-white/55 sm:flex-row">
-          <p>
-            © {new Date().getFullYear()} {site.name}. All Rights Reserved.
+          <p className="text-center sm:text-left">
+            © {new Date().getFullYear()} {site.name}. All Rights Reserved.{" "}
+            <span className="text-white/45">
+              Designed &amp; created by Techvion Technology.
+            </span>
           </p>
           <p>
             {site.registration.dao} &nbsp;|&nbsp; {site.registration.swc}

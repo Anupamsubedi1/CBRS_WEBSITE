@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
+import { BankQR } from "@/components/shared/bank-qr";
+import { cn } from "@/lib/utils";
 
 interface Crumb {
   label: string;
@@ -60,7 +62,13 @@ export function PageHero({
         </>
       )}
 
-      <Container className={image ? "relative py-16 lg:py-24" : "relative py-14 lg:py-20"}>
+      <Container
+        className={cn(
+          image ? "py-16 lg:py-24" : "py-14 lg:py-20",
+          "relative lg:flex lg:items-center lg:justify-between lg:gap-12",
+        )}
+      >
+        <div className="lg:min-w-0 lg:flex-1">
         {breadcrumbs && breadcrumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="mb-5">
             <ol className="flex flex-wrap items-center gap-1.5 text-sm text-white/70">
@@ -94,6 +102,10 @@ export function PageHero({
         {children && (
           <div className="mt-8 flex flex-wrap items-center gap-3">{children}</div>
         )}
+        </div>
+
+        {/* Bank-account QR — admin-managed; shown on the right of the banner (lg+) */}
+        <BankQR className="hidden lg:block" />
       </Container>
     </section>
   );

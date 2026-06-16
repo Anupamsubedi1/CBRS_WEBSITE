@@ -66,6 +66,17 @@
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Header height token — keeps the home hero's viewport-fit calc and the mobile
+   menu offset in sync with the Header bars. Update if the header height changes. */
+:root {
+  --header-h: 5rem; /* mobile: main nav bar only (~80px) */
+}
+@media (min-width: 768px) {
+  :root {
+    --header-h: 7rem; /* + utility bar on md+ (~112px) */
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Base
    --------------------------------------------------------------------------- */
@@ -98,6 +109,14 @@
 
   p {
     text-wrap: pretty;
+  }
+
+  /* Responsive media: plain content images/video never overflow their container.
+     next/image manages its own sizing, so it is excluded via the data-nimg attr. */
+  img:not([data-nimg]),
+  video {
+    max-width: 100%;
+    height: auto;
   }
 
   /* Accessible focus — visible, high-contrast, never removed */
@@ -215,5 +234,19 @@
   }
   .animate-ticker {
     animation: ticker 28s linear infinite;
+  }
+
+  /* Attention "pop" for the primary Donate CTA — gently scales in and out to
+     invite a click. Transform-only so it never overrides the button's own
+     shadow. Auto-disabled under prefers-reduced-motion by the base rule. */
+  @keyframes cta-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.055); }
+  }
+  .cta-pulse {
+    animation: cta-pulse 1.8s var(--ease-out-soft) infinite;
+  }
+  .cta-pulse:hover {
+    animation-play-state: paused;
   }
 }

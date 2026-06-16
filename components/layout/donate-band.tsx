@@ -1,6 +1,6 @@
-import { Heart, ArrowRight, HandHeart } from "lucide-react";
+import { HandHeart } from "lucide-react";
 import { Container } from "@/components/shared/container";
-import { Button } from "@/components/ui/button";
+import { DonateButton } from "@/components/shared/donate-button";
 import type { HomeDonateBand } from "@/lib/types";
 
 const defaultContent: HomeDonateBand = {
@@ -30,10 +30,12 @@ export function DonateBand({ content = defaultContent }: { content?: HomeDonateB
             <p className="mt-1.5 max-w-xl text-white/85">{content.description}</p>
           </div>
         </div>
-        <Button href={content.ctaHref} variant="white" size="lg" className="shrink-0">
-          <Heart className="fill-current text-accent" /> {content.ctaLabel}
-          <ArrowRight />
-        </Button>
+        <DonateButton
+          href={content.ctaHref}
+          label={content.ctaLabel}
+          size="lg"
+          className="shrink-0"
+        />
       </Container>
     </section>
   );

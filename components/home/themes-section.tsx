@@ -33,23 +33,15 @@ export function ThemesSection() {
         </div>
 
         <StaggerGroup className="mt-12 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3">
-          {themes.map((theme, i) => (
+          {themes.map((theme) => (
             <StaggerItem key={theme.slug} className="h-full">
               <Link
                 href={`/about/cbrs-nepal#${theme.slug}`}
                 className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-card-hover"
               >
-                <div className="flex items-start justify-between">
-                  <span className="grid size-14 place-items-center rounded-2xl bg-primary-50 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
-                    <ThemeIcon name={theme.icon} className="size-7" />
-                  </span>
-                  <span
-                    className="font-display text-4xl font-extrabold leading-none text-primary-100"
-                    aria-hidden="true"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
+                <span className="grid size-14 place-items-center rounded-2xl bg-primary-50 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
+                  <ThemeIcon name={theme.icon} className="size-7" />
+                </span>
                 <h3 className="mt-6 text-lg font-bold text-foreground">
                   {theme.title}
                 </h3>
