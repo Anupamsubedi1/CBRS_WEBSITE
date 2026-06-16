@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Camera, Layers, HandHeart } from "lucide-react";
 import { Container } from "@/components/shared/container";
-import { PageHero } from "@/components/shared/page-hero";
+import { PageHero, HeroChip } from "@/components/shared/page-hero";
+import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { GalleryGrid } from "@/components/gallery/gallery-grid";
 import { DonateBand } from "@/components/layout/donate-band";
@@ -9,14 +11,8 @@ import { gallery, galleryCategories } from "@/lib/data/gallery";
 export const metadata: Metadata = {
   title: "Gallery",
   description:
-    "Moments from CBRS Nepal's work — rehabilitation, inclusive education, livelihoods, community development and events across Gandaki Province.",
+    "Moments from CBRS Nepal's work in rehabilitation, inclusive education, livelihoods and community development across Gandaki Province.",
 };
-
-const stats = [
-  { value: `${gallery.length}+`, label: "Photos" },
-  { value: `${galleryCategories.length}`, label: "Categories" },
-  { value: "30+", label: "Years of Stories" },
-];
 
 export default function GalleryPage() {
   return (
@@ -26,67 +22,41 @@ export default function GalleryPage() {
         title="Our Work in Pictures"
         description="Every photo tells a story of inclusion, resilience and dignity. Explore moments from across our programs and communities."
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Gallery" }]}
-      />
+      >
+        <HeroChip icon={<Layers className="size-4" aria-hidden="true" />}>
+          {galleryCategories.length - 1} Programs
+        </HeroChip>
+        <HeroChip icon={<Camera className="size-4" aria-hidden="true" />}>
+          Organized by program
+        </HeroChip>
+      </PageHero>
 
-      {/* Stats strip — matches the impact counter row on homepage */}
-      <div className="border-b border-border bg-white">
-        <Container>
-          <div className="grid grid-cols-3 divide-x divide-border">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="group flex flex-col items-center justify-center gap-1 py-6 transition-colors duration-300 hover:bg-primary/5"
-              >
-                <span className="text-3xl font-extrabold text-primary transition-all duration-300 group-hover:scale-110 group-hover:text-accent lg:text-4xl">
-                  {stat.value}
-                </span>
-                <span className="text-xs font-semibold uppercase tracking-widest text-muted transition-colors duration-300 group-hover:text-foreground">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </div>
-
-      {/* Main gallery section */}
       <section className="py-20 lg:py-24">
         <Container>
-
-          {/* Section header — matches "OUR PROGRAMS / Featured Programs" style */}
           <Reveal>
-            <div className="mb-10">
-              <p className="text-sm font-bold uppercase tracking-widest text-accent">
-                Browse by Category
-              </p>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-foreground lg:text-4xl">
-                Explore Our Gallery
-              </h2>
-              <p className="mt-3 max-w-2xl text-muted">
-                Filter through our programs — from rehabilitation and inclusive
-                education to livelihood support and community events across
-                Gandaki Province.
-              </p>
-            </div>
+            <SectionHeading
+              align="left"
+              eyebrow="Browse by Program"
+              title="Explore Our Gallery"
+              description="Filter our work by program, from rehabilitation and inclusive education to livelihood, rights and community development."
+            />
           </Reveal>
 
-          {/* Gallery grid — clean white card matching homepage program cards */}
-          <Reveal delay={0.06}>
-            <div className="overflow-hidden rounded-3xl border border-border bg-white shadow-card transition-all duration-300 hover:shadow-2xl">
-              <div className="p-6 sm:p-8 lg:p-10">
-                <GalleryGrid items={gallery} categories={[...galleryCategories]} />
-              </div>
-            </div>
+          <Reveal delay={0.06} className="mt-10">
+            <GalleryGrid items={gallery} categories={[...galleryCategories]} />
           </Reveal>
 
-          {/* Consent note */}
+          {/* Dignity & consent note */}
           <Reveal delay={0.1}>
-            <p className="mt-8 text-center text-sm text-muted">
-              All photographs are shared with the consent of individuals and
-              communities depicted.
+            <p className="mx-auto mt-12 flex max-w-xl items-center justify-center gap-2.5 rounded-full border border-border bg-surface px-6 py-3 text-center text-sm text-muted">
+              <HandHeart
+                className="size-4 shrink-0 text-accent-700"
+                aria-hidden="true"
+              />
+              All photographs are shared with the consent of the individuals
+              and communities depicted.
             </p>
           </Reveal>
-
         </Container>
       </section>
 

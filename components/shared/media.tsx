@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
@@ -42,8 +44,10 @@ export interface MediaProps {
 
 /**
  * Renders a real image when `src` is provided, otherwise a polished branded
- * placeholder. Swapping mock content for Cloudinary URLs requires no markup
- * changes — just provide `src`.
+ * placeholder. If the image fails to load (e.g. a portrait file hasn't been
+ * uploaded yet) it transparently falls back to the same placeholder, so the
+ * page never shows a broken image. Swapping mock content for Cloudinary URLs
+ * requires no markup changes — just provide `src`.
  */
 export function Media({
   src,
@@ -58,6 +62,8 @@ export function Media({
   priority,
   rounded,
 }: MediaProps) {
+  const [failed, setFailed] = React.useState(false);
+
   const wrapper = cn(
     "relative overflow-hidden bg-slate-100",
     !fill && ratio,
@@ -65,7 +71,7 @@ export function Media({
     className,
   );
 
-  if (src) {
+  if (src && !failed) {
     return (
       <div className={wrapper}>
         <Image
@@ -75,6 +81,7 @@ export function Media({
           sizes={sizes}
           priority={priority}
           className="object-cover"
+          onError={() => setFailed(true)}
         />
       </div>
     );

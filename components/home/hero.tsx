@@ -60,7 +60,7 @@ export function Hero() {
             {...rise(0)}
             className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white shadow-md"
           >
-            Working with and for People with Disabilities
+            Working with and for people with disability and development in Nepal
           </motion.span>
 
           <motion.h1
@@ -92,17 +92,17 @@ export function Hero() {
           {/* Mobile/tablet: cards as a responsive grid below the CTAs */}
           <motion.ul
             {...rise(0.34)}
-            className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:hidden"
+            className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:hidden"
           >
             {pillars.map(({ icon: Icon, label, tint }) => (
               <li
                 key={label}
-                className="flex flex-col items-center gap-2.5 rounded-2xl bg-white px-3 py-4 text-center shadow-float"
+                className="flex flex-col items-center gap-3 rounded-2xl bg-white px-4 py-6 text-center shadow-float"
               >
-                <span className={`grid size-11 place-items-center rounded-full ${tint} text-white`}>
-                  <Icon className="size-5" aria-hidden="true" />
+                <span className={`grid size-14 place-items-center rounded-full ${tint} text-white`}>
+                  <Icon className="size-7" aria-hidden="true" />
                 </span>
-                <span className="text-xs font-semibold leading-tight text-foreground">
+                <span className="text-sm font-semibold leading-tight text-foreground">
                   {label}
                 </span>
               </li>
@@ -111,7 +111,7 @@ export function Hero() {
         </div>
       </Container>
 
-      {/* Desktop: 4 service cards floating at the bottom-right, overlapping the edge */}
+      {/* Desktop: 4 service cards floating centred at the bottom, overlapping the edge */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 z-10 hidden lg:block"
         aria-hidden="false"
@@ -125,17 +125,17 @@ export function Hero() {
                   animate: { opacity: 1, y: 0 },
                   transition: { duration: 0.6, ease, delay: 0.45 },
                 })}
-            className="pointer-events-auto absolute bottom-0 right-0 flex translate-y-1/3 gap-4"
+            className="pointer-events-auto absolute bottom-0 left-1/2 flex -translate-x-1/2 translate-y-1/3 gap-5"
           >
             {pillars.map(({ icon: Icon, label, tint }) => (
               <li
                 key={label}
-                className="flex w-[10.75rem] flex-col items-center gap-3 rounded-2xl bg-white px-4 py-6 text-center shadow-float"
+                className="flex w-60 flex-col items-center gap-4 rounded-3xl bg-white px-6 py-9 text-center shadow-float"
               >
-                <span className={`grid size-12 place-items-center rounded-full ${tint} text-white`}>
-                  <Icon className="size-6" aria-hidden="true" />
+                <span className={`grid size-[4.5rem] place-items-center rounded-full ${tint} text-white`}>
+                  <Icon className="size-9" aria-hidden="true" />
                 </span>
-                <span className="text-sm font-semibold leading-tight text-foreground">
+                <span className="text-base font-semibold leading-tight text-foreground">
                   {label}
                 </span>
               </li>
@@ -145,7 +145,7 @@ export function Hero() {
       </div>
 
       {/* spacer so the floating cards clear the next section on desktop */}
-      <div className="hidden h-20 lg:block" aria-hidden="true" />
+      <div className="hidden h-28 lg:block" aria-hidden="true" />
     </section>
   );
 }

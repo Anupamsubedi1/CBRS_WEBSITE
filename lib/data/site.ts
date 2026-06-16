@@ -3,29 +3,23 @@
 export const site = {
   name: "CBRS Nepal",
   fullName: "Community Based Rehabilitation Service",
-  tagline: "Working with and for People with Disabilities",
+  tagline: "Working with and for people with disability and development in Nepal",
   description:
-    "CBRS Nepal is a non-government organization working with and for people with disabilities, their families and marginalized communities across Nepal since 2005.",
+    "CBRS Nepal is a non-government organization working with and for people with disabilities, their families and marginalized communities across Nepal.",
   vision:
     "A society which respects the rights and dignity of people with disabilities and marginalized communities and provides equal opportunities for them to achieve their full potential.",
-  location: "Pokhara, Nepal",
+  location: "Pokhara Metropolitan City Ward No. 9, Nayabazar, Kaski, Nepal",
   province: "Gandaki Province",
   contact: {
     phone: "+977-61-587326",
     mobile: "9856025511",
     email: "cbrsnepal@gmail.com",
-    address: "CBRS Head Office, Pokhara, Kaski, Gandaki Province, Nepal",
+    address:
+      "CBRS Head Office, Pokhara Metropolitan City Ward No. 9, Nayabazar, Kaski, Nepal",
   },
   registration: {
     dao: "DAO Kaski Regd No: 170/051",
     swc: "SWC Affiliation No: 2607/051",
-  },
-  social: {
-    facebook: "https://facebook.com",
-    twitter: "https://twitter.com",
-    youtube: "https://youtube.com",
-    instagram: "https://instagram.com",
-    linkedin: "https://linkedin.com",
   },
 } as const;
 

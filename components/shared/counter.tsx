@@ -23,16 +23,11 @@ export function Counter({ value, className }: { value: string; className?: strin
   const suffix = match ? value.slice((match.index ?? 0) + match[0].length) : value;
 
   const mv = useMotionValue(0);
-  const [display, setDisplay] = React.useState(
-    reduce || isNaN(target) ? value : `${prefix}0${suffix}`,
-  );
+  const [display, setDisplay] = React.useState(`${prefix}0${suffix}`);
+  const animatable = !reduce && !isNaN(target);
 
   React.useEffect(() => {
-    if (isNaN(target) || reduce) {
-      setDisplay(value);
-      return;
-    }
-    if (!inView) return;
+    if (!animatable || !inView) return;
     const controls = animate(mv, target, {
       duration: 1.6,
       ease: [0.22, 1, 0.36, 1],
@@ -41,11 +36,11 @@ export function Counter({ value, className }: { value: string; className?: strin
       },
     });
     return () => controls.stop();
-  }, [inView, target, reduce, mv, prefix, suffix, value]);
+  }, [inView, target, animatable, mv, prefix, suffix]);
 
   return (
     <span ref={ref} className={className}>
-      {display}
+      {animatable ? display : value}
     </span>
   );
 }

@@ -1,4 +1,4 @@
-import { Home, Search, ArrowLeft } from "lucide-react";
+import { Home, Search } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 
@@ -12,8 +12,8 @@ export default function NotFound() {
           Page Not Found
         </h1>
         <p className="mt-4 max-w-md text-white/80">
-          Sorry, the page you're looking for doesn't exist or has been moved.
-          Let's get you back on track.
+          Sorry, the page you&rsquo;re looking for doesn&rsquo;t exist or has
+          been moved. Let&rsquo;s get you back on track.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Button href="/" variant="white">

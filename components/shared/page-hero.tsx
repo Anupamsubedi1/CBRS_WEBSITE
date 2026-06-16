@@ -1,4 +1,6 @@
+import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
 
@@ -12,18 +14,53 @@ interface PageHeroProps {
   title: string;
   description?: string;
   breadcrumbs?: Crumb[];
+  /**
+   * Optional photographic backdrop. Rendered under a single brand-primary
+   * overlay (opacity fade only) so each inner page can open with a real
+   * human moment instead of a flat banner.
+   */
+  image?: { src: string; position?: string };
+  /** Optional slot below the description — stat chips, quick actions, etc. */
+  children?: React.ReactNode;
 }
 
-/** Consistent inner-page banner on the brand gradient, with breadcrumbs. */
-export function PageHero({ eyebrow, title, description, breadcrumbs }: PageHeroProps) {
+/** Inner-page intro: brand backdrop (or photo + primary overlay), breadcrumbs. */
+export function PageHero({
+  eyebrow,
+  title,
+  description,
+  breadcrumbs,
+  image,
+  children,
+}: PageHeroProps) {
   return (
-    <section className="relative overflow-hidden bg-brand-hero text-white">
-      <div className="pattern-grid absolute inset-0 opacity-50" aria-hidden="true" />
-      <div
-        className="absolute -right-20 -top-16 size-72 rounded-full bg-accent/20 blur-3xl"
-        aria-hidden="true"
-      />
-      <Container className="relative py-14 lg:py-20">
+    <section className="relative isolate overflow-hidden bg-brand-hero text-white">
+      {image ? (
+        <>
+          <Image
+            src={image.src}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="-z-20 object-cover"
+            style={{ objectPosition: image.position ?? "center" }}
+          />
+          {/* Single brand-primary overlay, opacity-only fade */}
+          <div className="hero-overlay-y absolute inset-0 -z-10 lg:hidden" aria-hidden="true" />
+          <div className="hero-overlay-x absolute inset-0 -z-10 hidden lg:block" aria-hidden="true" />
+        </>
+      ) : (
+        <>
+          <div className="pattern-grid absolute inset-0 opacity-50" aria-hidden="true" />
+          <div
+            className="absolute -right-20 -top-16 size-72 rounded-full bg-accent/20 blur-3xl"
+            aria-hidden="true"
+          />
+        </>
+      )}
+
+      <Container className={image ? "relative py-16 lg:py-24" : "relative py-14 lg:py-20"}>
         {breadcrumbs && breadcrumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="mb-5">
             <ol className="flex flex-wrap items-center gap-1.5 text-sm text-white/70">
@@ -54,7 +91,42 @@ export function PageHero({ eyebrow, title, description, breadcrumbs }: PageHeroP
             {description}
           </p>
         )}
+        {children && (
+          <div className="mt-8 flex flex-wrap items-center gap-3">{children}</div>
+        )}
       </Container>
     </section>
+  );
+}
+
+/** Small translucent stat/action chip for use inside `PageHero`. */
+export function HeroChip({
+  icon,
+  href,
+  children,
+}: {
+  icon?: React.ReactNode;
+  href?: string;
+  children: React.ReactNode;
+}) {
+  const className =
+    "inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/25 backdrop-blur-sm";
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        className={`${className} transition-colors hover:bg-white/20`}
+      >
+        {icon}
+        {children}
+      </a>
+    );
+  }
+  return (
+    <span className={className}>
+      {icon}
+      {children}
+    </span>
   );
 }

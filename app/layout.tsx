@@ -20,7 +20,7 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL("https://cbrsnepal.org"),
   title: {
-    default: `${site.name} — ${site.tagline}`,
+    default: `${site.name} | ${site.tagline}`,
     template: `%s · ${site.name}`,
   },
   description: site.description,
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     "people with disabilities",
   ],
   openGraph: {
-    title: `${site.name} — ${site.tagline}`,
+    title: `${site.name} | ${site.tagline}`,
     description: site.description,
     type: "website",
     locale: "en_US",

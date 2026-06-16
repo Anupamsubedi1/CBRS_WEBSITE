@@ -1,12 +1,5 @@
 import Link from "next/link";
 import { MapPin, Phone, Mail } from "lucide-react";
-import {
-  FacebookIcon,
-  TwitterIcon,
-  YoutubeIcon,
-  InstagramIcon,
-  LinkedinIcon,
-} from "@/components/shared/social-icons";
 import { Container } from "@/components/shared/container";
 import { BrandLogo } from "@/components/layout/brand-logo";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
@@ -23,14 +16,6 @@ const quickLinks = [
   { label: "Donation", href: "/donate" },
 ];
 
-const socials = [
-  { label: "Facebook", href: site.social.facebook, Icon: FacebookIcon },
-  { label: "Twitter", href: site.social.twitter, Icon: TwitterIcon },
-  { label: "YouTube", href: site.social.youtube, Icon: YoutubeIcon },
-  { label: "Instagram", href: site.social.instagram, Icon: InstagramIcon },
-  { label: "LinkedIn", href: site.social.linkedin, Icon: LinkedinIcon },
-];
-
 export function Footer() {
   return (
     <footer className="bg-primary-950 text-white/75">
@@ -42,18 +27,6 @@ export function Footer() {
             Working with and for people with disabilities and marginalized
             communities to build an inclusive, dignified society across Nepal.
           </p>
-          <div className="mt-5 flex items-center gap-2.5">
-            {socials.map(({ label, href, Icon }) => (
-              <a
-                key={label}
-                href={href}
-                aria-label={label}
-                className="grid size-9 place-items-center rounded-lg bg-white/10 text-white transition-colors hover:bg-accent"
-              >
-                <Icon className="size-4" />
-              </a>
-            ))}
-          </div>
         </div>
 
         {/* Quick links */}
@@ -84,7 +57,7 @@ export function Footer() {
             {themes.map((t) => (
               <li key={t.slug}>
                 <Link
-                  href={`/about/cbrs-nepal#${t.slug}`}
+                  href={`/programs/${t.slug}`}
                   className="text-white/70 transition-colors hover:text-accent-100"
                 >
                   {t.title}

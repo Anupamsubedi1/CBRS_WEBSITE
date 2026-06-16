@@ -6,33 +6,27 @@ import type { Program } from "@/lib/types";
 
 export function ProgramCard({ program }: { program: Program }) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover">
-      <Link
-        href={`/programs/${program.slug}`}
-        className="block focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-secondary"
-        aria-label={program.title}
-      >
-        <div className="relative">
-          <Media
-            src={program.coverImage}
-            alt={program.title}
-            seed={program.slug}
-            label={program.category}
-            ratio="aspect-[16/10]"
-            className="transition-transform duration-500 group-hover:scale-[1.03]"
-          />
-          <div className="absolute left-3 top-3">
-            <Badge variant="on-dark" size="sm">
-              {program.category}
-            </Badge>
-          </div>
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-card-hover">
+      <div className="relative overflow-hidden">
+        <Media
+          src={program.coverImage}
+          alt={program.title}
+          seed={program.slug}
+          label={program.category}
+          ratio="aspect-[16/10]"
+          className="transition-transform duration-500 group-hover:scale-[1.04]"
+        />
+        <div className="absolute left-3 top-3">
+          <Badge variant="on-dark" size="sm">
+            {program.category}
+          </Badge>
         </div>
-      </Link>
+      </div>
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="text-lg font-bold text-foreground">
+        <h3 className="text-lg font-bold leading-snug text-foreground">
           <Link
             href={`/programs/${program.slug}`}
-            className="transition-colors hover:text-primary focus-visible:outline-none"
+            className="after:absolute after:inset-0 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-secondary"
           >
             {program.title}
           </Link>
@@ -40,13 +34,13 @@ export function ProgramCard({ program }: { program: Program }) {
         <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
           {program.excerpt}
         </p>
-        <Link
-          href={`/programs/${program.slug}`}
+        <span
           className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
+          aria-hidden="true"
         >
           View Program
-          <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-        </Link>
+          <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </span>
       </div>
     </article>
   );

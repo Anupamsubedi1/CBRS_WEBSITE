@@ -54,7 +54,7 @@ export function BrandLogo({
   return (
     <Link
       href={href}
-      aria-label={`${site.name} — home`}
+      aria-label={`${site.name} home page`}
       className="rounded-lg focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-secondary"
     >
       {content}

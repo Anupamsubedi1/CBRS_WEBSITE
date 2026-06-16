@@ -5,11 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X, Phone, Mail, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  FacebookIcon,
-  YoutubeIcon,
-  InstagramIcon,
-} from "@/components/shared/social-icons";
 import { navLinks, site } from "@/lib/data/site";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/layout/brand-logo";
@@ -94,19 +89,9 @@ export function Header() {
             </a>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-white/70">{site.registration.swc}</span>
+            <span className="text-white/70">{site.registration.dao}</span>
             <span className="h-3 w-px bg-white/25" aria-hidden="true" />
-            <div className="flex items-center gap-2">
-              <a href={site.social.facebook} aria-label="Facebook" className="rounded transition-opacity hover:opacity-80">
-                <FacebookIcon className="size-3.5" />
-              </a>
-              <a href={site.social.youtube} aria-label="YouTube" className="rounded transition-opacity hover:opacity-80">
-                <YoutubeIcon className="size-3.5" />
-              </a>
-              <a href={site.social.instagram} aria-label="Instagram" className="rounded transition-opacity hover:opacity-80">
-                <InstagramIcon className="size-3.5" />
-              </a>
-            </div>
+            <span className="text-white/70">{site.registration.swc}</span>
           </div>
         </div>
       </div>

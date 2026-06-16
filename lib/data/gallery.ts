@@ -1,28 +1,71 @@
 import type { GalleryItem } from "@/lib/types";
+import { programs } from "@/lib/data/programs";
 
-export const galleryCategories = [
-  "All",
-  "Rehabilitation",
-  "Education",
-  "Livelihood",
-  "Community",
-  "Events",
-] as const;
+/**
+ * The gallery is interrelated with programs. Each photo carries a `programSlug`
+ * so it shows up both here (filtered by program) and on that program's page.
+ * Filters are the program names, kept in sync automatically.
+ *
+ * Captions below are real CBRS activity areas taken from the organisation
+ * profile. Drop real photos into `public/gallery/<folder>/` and set `src` on
+ * the matching entry; until then a branded placeholder is shown.
+ */
+const titleFor = (slug: string) =>
+  programs.find((p) => p.slug === slug)?.title ?? "";
 
-export const gallery: GalleryItem[] = [
-  { id: "g1", title: "Home rehabilitation visit", category: "Rehabilitation", span: "tall" },
-  { id: "g2", title: "Inclusive classroom in session", category: "Education", span: "wide" },
-  { id: "g3", title: "Wheelchair fitting day", category: "Rehabilitation", span: "normal" },
-  { id: "g4", title: "Tailoring vocational training", category: "Livelihood", span: "normal" },
-  { id: "g5", title: "World Disability Day rally", category: "Events", span: "wide" },
-  { id: "g6", title: "Self-help group meeting", category: "Community", span: "tall" },
-  { id: "g7", title: "School enrollment campaign", category: "Education", span: "normal" },
-  { id: "g8", title: "Eye & ear health camp", category: "Rehabilitation", span: "normal" },
-  { id: "g9", title: "Accessible water point", category: "Community", span: "normal" },
-  { id: "g10", title: "Entrepreneurship mentoring", category: "Livelihood", span: "tall" },
-  { id: "g11", title: "Assistive device workshop", category: "Rehabilitation", span: "normal" },
-  { id: "g12", title: "Community awareness event", category: "Events", span: "wide" },
-  { id: "g13", title: "Children at an inclusive school", category: "Education", span: "normal" },
-  { id: "g14", title: "Leadership training", category: "Community", span: "normal" },
-  { id: "g15", title: "Cultural program performance", category: "Events", span: "normal" },
+type Seed = {
+  slug: string;
+  title: string;
+  src?: string;
+  span?: GalleryItem["span"];
+};
+
+const seed: Seed[] = [
+  // Rehabilitation and Health  (folder: Device making and delivery)
+  { slug: "rehabilitation-health", title: "Assistive device making", span: "tall" },
+  { slug: "rehabilitation-health", title: "Assistive device delivery", span: "normal" },
+  { slug: "rehabilitation-health", title: "Home visit for physiotherapy and counseling", span: "wide" },
+  { slug: "rehabilitation-health", title: "Health camp", span: "normal" },
+
+  // Livelihood  (folder: IGP Support)
+  { slug: "livelihood-development", title: "Income generation program support", span: "normal" },
+  { slug: "livelihood-development", title: "Vocational training", span: "tall" },
+  { slug: "livelihood-development", title: "Self Help Group fund mobilization", span: "normal" },
+
+  // Inclusive Education
+  { slug: "inclusive-education", title: "School and community awareness", span: "wide" },
+  { slug: "inclusive-education", title: "School enrollment campaign", span: "normal" },
+  { slug: "inclusive-education", title: "Educational material support", span: "normal" },
+
+  // Rights, Empowerment and Social Inclusion  (folders: SHG formation, Special programs)
+  { slug: "rights-social-inclusion", title: "Self Help Group formation", span: "normal" },
+  { slug: "rights-social-inclusion", title: "Advocacy program", span: "tall" },
+  { slug: "rights-social-inclusion", title: "Special social gathering", span: "wide" },
+
+  // Human Resource Development and Research
+  { slug: "human-resource-development", title: "Staff capacity building training", span: "normal" },
+  { slug: "human-resource-development", title: "Disability orientation", span: "normal" },
+
+  // Community Development  (folder: supported by local government)
+  { slug: "community-development", title: "Drinking water and sanitation", span: "normal" },
+  { slug: "community-development", title: "Collaboration with local government", span: "wide" },
 ];
+
+export const gallery: GalleryItem[] = seed.map((s, i) => ({
+  id: `g${i + 1}`,
+  title: s.title,
+  programSlug: s.slug,
+  category: titleFor(s.slug),
+  src: s.src,
+  span: s.span,
+}));
+
+export const galleryCategories: string[] = [
+  "All",
+  ...programs.map((p) => p.title),
+];
+
+/** Photos for a given program slug (used on program detail pages). */
+export function galleryForProgram(slug: string) {
+  return gallery.filter((g) => g.programSlug === slug);
+}

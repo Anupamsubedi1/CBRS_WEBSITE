@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DonateBand } from "@/components/layout/donate-band";
 import { programs, getProgramBySlug } from "@/lib/data/programs";
+import { galleryForProgram } from "@/lib/data/gallery";
 
 export function generateStaticParams() {
   return programs.map((p) => ({ slug: p.slug }));
@@ -39,8 +40,9 @@ export default async function ProgramDetailPage({
   const program = getProgramBySlug(slug);
   if (!program) notFound();
 
+  const photos = galleryForProgram(program.slug);
   const related = programs
-    .filter((p) => p.slug !== program.slug && p.category === program.category)
+    .filter((p) => p.slug !== program.slug)
     .slice(0, 2);
 
   return (
@@ -129,18 +131,27 @@ export default async function ProgramDetailPage({
               </div>
             </Reveal>
 
-            {/* Gallery */}
-            {program.gallery.length > 0 && (
+            {/* Gallery (photos linked to this program) */}
+            {photos.length > 0 && (
               <Reveal className="mt-10">
-                <h3 className="text-xl font-bold">Program Gallery</h3>
+                <div className="flex items-center justify-between gap-4">
+                  <h3 className="text-xl font-bold">Program Gallery</h3>
+                  <Link
+                    href="/gallery"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+                  >
+                    View in gallery
+                    <ArrowRight className="size-4" aria-hidden="true" />
+                  </Link>
+                </div>
                 <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {program.gallery.map((g, i) => (
+                  {photos.map((g) => (
                     <Media
-                      key={i}
+                      key={g.id}
                       src={g.src}
-                      alt={g.caption}
-                      seed={`${program.slug}-${i}`}
-                      label={g.caption}
+                      alt={g.title}
+                      seed={g.id}
+                      label={g.title}
                       ratio="aspect-square"
                       rounded="rounded-2xl"
                     />

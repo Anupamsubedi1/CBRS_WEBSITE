@@ -61,7 +61,10 @@ export interface NewsItem {
 export interface GalleryItem {
   id: string;
   title: string;
+  /** Display label, kept in sync with the linked program's title. */
   category: string;
+  /** Links this photo to a program, so it appears on that program's page. */
+  programSlug: string;
   src?: string;
   /** Visual span hint for the masonry layout. */
   span?: "tall" | "wide" | "normal";
@@ -88,9 +91,9 @@ export interface Advisor {
 export interface GeneralMember {
   id: string;
   name: string;
-  role: string;
   ward: string;
-  joined: string;
+  /** Phone number; may be empty if not on record. */
+  contact: string;
 }
 
 export interface ImpactStat {

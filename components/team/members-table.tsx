@@ -18,8 +18,8 @@ export function MembersTable({ members }: { members: GeneralMember[] }) {
     return members.filter(
       (m) =>
         m.name.toLowerCase().includes(q) ||
-        m.role.toLowerCase().includes(q) ||
-        m.ward.toLowerCase().includes(q),
+        m.ward.toLowerCase().includes(q) ||
+        m.contact.includes(q),
     );
   }, [members, query]);
 
@@ -29,7 +29,10 @@ export function MembersTable({ members }: { members: GeneralMember[] }) {
   const rows = filtered.slice(start, start + PAGE_SIZE);
 
   // Reset to first page whenever the search changes.
-  React.useEffect(() => setPage(1), [query]);
+  function changeQuery(value: string) {
+    setQuery(value);
+    setPage(1);
+  }
 
   return (
     <div className="rounded-3xl border border-border bg-surface p-5 shadow-card sm:p-6">
@@ -43,9 +46,9 @@ export function MembersTable({ members }: { members: GeneralMember[] }) {
           <Input
             type="search"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search members…"
-            aria-label="Search members by name, role or ward"
+            onChange={(e) => changeQuery(e.target.value)}
+            placeholder="Search by name, ward or number…"
+            aria-label="Search members by name, ward or contact number"
             className="pl-10"
           />
         </div>
@@ -63,15 +66,14 @@ export function MembersTable({ members }: { members: GeneralMember[] }) {
           <thead>
             <tr className="border-b border-border text-xs uppercase tracking-wide text-muted">
               <th scope="col" className="px-3 py-3 font-semibold">Name</th>
-              <th scope="col" className="px-3 py-3 font-semibold">Role</th>
-              <th scope="col" className="px-3 py-3 font-semibold">Ward</th>
-              <th scope="col" className="px-3 py-3 font-semibold">Member Since</th>
+              <th scope="col" className="px-3 py-3 font-semibold">Ward / Location</th>
+              <th scope="col" className="px-3 py-3 font-semibold">Contact No.</th>
             </tr>
           </thead>
           <tbody>
             {rows.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-3 py-12 text-center text-muted">
+                <td colSpan={3} className="px-3 py-12 text-center text-muted">
                   <Users className="mx-auto mb-2 size-6 opacity-50" aria-hidden="true" />
                   No members match “{query}”.
                 </td>
@@ -85,9 +87,19 @@ export function MembersTable({ members }: { members: GeneralMember[] }) {
                   <th scope="row" className="px-3 py-3.5 font-semibold text-foreground">
                     {m.name}
                   </th>
-                  <td className="px-3 py-3.5 text-muted">{m.role}</td>
                   <td className="px-3 py-3.5 text-muted">{m.ward}</td>
-                  <td className="px-3 py-3.5 text-muted">{m.joined}</td>
+                  <td className="px-3 py-3.5 text-muted">
+                    {m.contact ? (
+                      <a
+                        href={`tel:+977${m.contact}`}
+                        className="underline-offset-4 transition-colors hover:text-primary hover:underline"
+                      >
+                        {m.contact}
+                      </a>
+                    ) : (
+                      <span className="text-muted/60">Not listed</span>
+                    )}
+                  </td>
                 </tr>
               ))
             )}
