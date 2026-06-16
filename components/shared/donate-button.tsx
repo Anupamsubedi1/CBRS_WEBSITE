@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import { IndianRupee } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * Donate CTA styled to match the reference: a solid red pill with a white
- * circle holding a red heart, bold uppercase label, and a 3D bottom edge.
+ * Donate CTA styled for a money-green pill with a white
+ * circle holding a coin icon, bold uppercase label, and a 3D bottom edge.
  * The `.cta-pulse` class gives it a gentle "pop" to draw the eye.
  */
 export function DonateButton({
@@ -31,16 +31,16 @@ export function DonateButton({
     <Link
       href={href}
       className={cn(
-        "cta-pulse inline-flex items-center rounded-full bg-[#e8232b] font-extrabold uppercase tracking-wide text-white",
-        "shadow-[0_5px_0_0_#b31a20,0_14px_22px_-10px_rgba(232,35,43,0.85)]",
-        "transition-colors duration-200 hover:bg-[#d31e26]",
-        "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#e8232b]/45",
+        "cta-pulse inline-flex items-center rounded-full bg-[#27ae60] font-extrabold uppercase tracking-wide text-white",
+        "shadow-[0_5px_0_0_#1b6f3b,0_14px_22px_-10px_rgba(39,174,96,0.85)]",
+        "transition-colors duration-200 hover:bg-[#219150]",
+        "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#27ae60]/45",
         pad,
         className,
       )}
     >
       <span className={cn("grid shrink-0 place-items-center rounded-full bg-white", circle)}>
-        <Heart className={cn("fill-[#e8232b] text-[#e8232b]", heart)} aria-hidden="true" />
+        <IndianRupee className={cn("fill-[#27ae60] text-[#27ae60]", heart)} aria-hidden="true" />
       </span>
       {label}
     </Link>
