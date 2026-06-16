@@ -1,4 +1,5 @@
 import { Hero } from "@/components/home/hero";
+import { ServicePillars } from "@/components/home/service-pillars";
 import { AboutStrip } from "@/components/home/about-strip";
 import { ThemesSection } from "@/components/home/themes-section";
 import { FeaturedPrograms } from "@/components/home/featured-programs";
@@ -9,6 +10,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <ServicePillars />
       <AboutStrip />
       <ThemesSection />
       <FeaturedPrograms />

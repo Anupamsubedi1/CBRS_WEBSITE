@@ -192,10 +192,10 @@
   .hero-overlay-x {
     background: linear-gradient(
       90deg,
-      rgba(0, 93, 170, 0.96) 0%,
-      rgba(0, 93, 170, 0.9) 30%,
-      rgba(0, 93, 170, 0.58) 55%,
-      rgba(0, 93, 170, 0.18) 75%,
+      rgba(0, 93, 170, 0.82) 0%,
+      rgba(0, 93, 170, 0.64) 30%,
+      rgba(0, 93, 170, 0.32) 55%,
+      rgba(0, 93, 170, 0.08) 75%,
       transparent 100%
     );
   }
@@ -203,9 +203,9 @@
   .hero-overlay-y {
     background: linear-gradient(
       180deg,
-      rgba(0, 93, 170, 0.92) 0%,
-      rgba(0, 93, 170, 0.82) 45%,
-      rgba(0, 93, 170, 0.8) 100%
+      rgba(0, 93, 170, 0.78) 0%,
+      rgba(0, 93, 170, 0.58) 45%,
+      rgba(0, 93, 170, 0.55) 100%
     );
   }
   /* Solid brand-primary fallback shown if the hero photo is unavailable */
@@ -248,5 +248,20 @@
   }
   .cta-pulse:hover {
     animation-play-state: paused;
+  }
+
+  /* Blinking caret for the looping typewriter effect (inherits text colour). */
+  @keyframes caret-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  .typewriter-caret {
+    display: inline-block;
+    width: 0.07em;
+    height: 1em;
+    margin-left: 0.08em;
+    background: currentColor;
+    vertical-align: -0.1em;
+    animation: caret-blink 1s step-end infinite;
   }
 }
