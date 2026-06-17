@@ -5,10 +5,11 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { Button } from "@/components/ui/button";
 import { Media } from "@/components/shared/media";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/shared/reveal";
-import { gallery } from "@/lib/data/gallery";
+import { getLatestGalleryItems } from "@/lib/gallery";
 
-export function Highlights() {
-  const items = gallery.slice(0, 6);
+export async function Highlights() {
+  const items = await getLatestGalleryItems(6);
+  if (items.length === 0) return null;
 
   return (
     <section className="bg-white py-8 lg:py-12" aria-labelledby="gallery-preview">
