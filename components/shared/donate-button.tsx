@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IndianRupee } from "lucide-react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
@@ -25,7 +25,7 @@ export function DonateButton({
         ? "py-1 pl-1 pr-4 text-sm gap-2"
         : "py-1.5 pl-1.5 pr-6 text-base gap-2.5";
   const circle = size === "lg" ? "size-11" : size === "sm" ? "size-7" : "size-9";
-  const heart = size === "lg" ? "size-6" : size === "sm" ? "size-4" : "size-5";
+  const iconPx = size === "lg" ? "44px" : size === "sm" ? "28px" : "36px";
 
   return (
     <Link
@@ -39,8 +39,14 @@ export function DonateButton({
         className,
       )}
     >
-      <span className={cn("grid shrink-0 place-items-center rounded-full bg-white", circle)}>
-        <IndianRupee className={cn("fill-[#27ae60] text-[#27ae60]", heart)} aria-hidden="true" />
+      <span className={cn("relative shrink-0 overflow-hidden rounded-full bg-white", circle)}>
+        <Image
+          src="/donation-icon.jpeg"
+          alt=""
+          fill
+          sizes={iconPx}
+          className="object-contain p-1"
+        />
       </span>
       {label}
     </Link>

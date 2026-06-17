@@ -153,25 +153,33 @@ export function GalleryEditor({
                 />
               </div>
               <div className="space-y-1.5">
-                <Label>Program</Label>
+                <Label>Category</Label>
                 <Select
-                  value={item.programSlug}
+                  value={item.category}
                   onChange={(e) =>
                     updateItems((d) => {
-                      const slug = e.target.value;
-                      d[i].programSlug = slug;
-                      d[i].category =
-                        programs.find((p) => p.slug === slug)?.title ?? "";
+                      const category = e.target.value;
+                      d[i].category = category;
+                      // Link to a program when the category matches one, so the
+                      // photo also appears on that program's page. Custom
+                      // categories simply have no program link.
+                      d[i].programSlug =
+                        programs.find((p) => p.title === category)?.slug ?? "";
                     })
                   }
                 >
-                  <option value="">Select a program</option>
-                  {programs.map((p) => (
-                    <option key={p.slug} value={p.slug}>{p.title}</option>
-                  ))}
+                  <option value="">Select a category</option>
+                  {categories
+                    .filter((c) => c !== "All")
+                    .map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
                 </Select>
                 <p className="text-xs text-muted">
-                  The photo appears under this program in the gallery and on the
+                  The photo appears under this category on the gallery page. If
+                  the category matches a program, it also shows on that
                   program&apos;s page.
                 </p>
               </div>
