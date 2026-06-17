@@ -6,7 +6,9 @@ import { saveTeam } from "@/lib/team";
 import { uploadImage, deleteImage } from "@/lib/cloudinary";
 import type { TeamContent } from "@/lib/types";
 
-export type SaveTeamState = { error?: string; success?: boolean } | undefined;
+export type SaveTeamState =
+  | { error?: string; success?: boolean; team?: TeamContent }
+  | undefined;
 
 export async function saveTeamAction(
   _prev: SaveTeamState,
@@ -64,5 +66,9 @@ export async function saveTeamAction(
   revalidatePath("/about/our-team");
   revalidatePath("/admin/team");
 
-  return { success: true };
+  // Return the persisted content (now carrying the uploaded photo URLs) so the
+  // editor can resync its state. Without this the client keeps photo:null for
+  // freshly-uploaded members, and the next save writes those nulls back —
+  // wiping previously-uploaded photos.
+  return { success: true, team };
 }

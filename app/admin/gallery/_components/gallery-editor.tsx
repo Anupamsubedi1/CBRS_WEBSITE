@@ -48,6 +48,24 @@ export function GalleryEditor({
     setToDelete((prev) => (prev.includes(publicId) ? prev : [...prev, publicId]));
   }
 
+  // After a successful save, adopt the persisted content (which now includes
+  // the uploaded image URLs). This keeps the form's serialized state in sync
+  // with the database, so a later save can't overwrite earlier images with
+  // stale nulls. `pickerKey` remounts the image pickers to drop blob previews.
+  // Done with React's "adjust state during render" pattern rather than an
+  // effect, so it applies before paint without cascading renders.
+  const [pickerKey, setPickerKey] = React.useState(0);
+  const [handledState, setHandledState] = React.useState(state);
+  if (state !== handledState) {
+    setHandledState(state);
+    if (state?.success && state.items) {
+      setItems(state.items);
+      if (state.categories) setCategories(state.categories);
+      setToDelete([]);
+      setPickerKey((k) => k + 1);
+    }
+  }
+
   function addCategory() {
     const name = newCategory.trim();
     if (!name || categories.includes(name)) return;
@@ -118,6 +136,7 @@ export function GalleryEditor({
           {items.map((item, i) => (
             <div key={item.id} className="space-y-3 rounded-xl border border-border p-4">
               <ImagePicker
+                key={`${item.id}-${pickerKey}`}
                 name={`item-${item.id}`}
                 label="Image"
                 image={item.image}

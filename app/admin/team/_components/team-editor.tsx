@@ -46,6 +46,23 @@ export function TeamEditor({ initialTeam }: { initialTeam: TeamContent }) {
     setToDelete((prev) => (prev.includes(publicId) ? prev : [...prev, publicId]));
   }
 
+  // After a successful save, adopt the persisted content (which now includes
+  // the uploaded photo URLs). This keeps the form's serialized state in sync
+  // with the database, so a later save can't overwrite earlier photos with
+  // stale nulls. `pickerKey` remounts the image pickers to drop blob previews.
+  // Done with React's "adjust state during render" pattern rather than an
+  // effect, so it applies before paint without cascading renders.
+  const [pickerKey, setPickerKey] = React.useState(0);
+  const [handledState, setHandledState] = React.useState(state);
+  if (state !== handledState) {
+    setHandledState(state);
+    if (state?.success && state.team) {
+      setTeam(state.team);
+      setToDelete([]);
+      setPickerKey((k) => k + 1);
+    }
+  }
+
   return (
     <form action={formAction} className="space-y-6 pb-24">
       <input type="hidden" name="team" value={JSON.stringify(team)} />
@@ -58,6 +75,7 @@ export function TeamEditor({ initialTeam }: { initialTeam: TeamContent }) {
           {team.board.map((m, i) => (
             <div key={m.id} className="space-y-3 rounded-xl border border-border p-4">
               <ImagePicker
+                key={`${m.id}-${pickerKey}`}
                 name={`board-${m.id}`}
                 label="Photo"
                 image={m.photo ?? null}
@@ -101,6 +119,7 @@ export function TeamEditor({ initialTeam }: { initialTeam: TeamContent }) {
           {team.advisors.map((a, i) => (
             <div key={a.id} className="space-y-3 rounded-xl border border-border p-4">
               <ImagePicker
+                key={`${a.id}-${pickerKey}`}
                 name={`advisor-${a.id}`}
                 label="Photo"
                 image={a.photo ?? null}
