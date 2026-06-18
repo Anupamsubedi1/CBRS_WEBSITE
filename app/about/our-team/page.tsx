@@ -57,16 +57,16 @@ export default async function OurTeamPage() {
             {boardMembers.map((m) => (
               <StaggerItem key={m.id} className="h-full">
                 <article className="group h-full overflow-hidden rounded-3xl border border-border bg-surface shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-card-hover">
-                  <div className="overflow-hidden">
-                    <Media
-                      src={m.photo?.url}
-                      alt={`Portrait of ${m.name}`}
-                      seed={m.id}
-                      ratio="aspect-[4/3]"
-                      className="transition-transform duration-500 group-hover:scale-[1.04]"
-                      icon={<Users2 className="size-7" aria-hidden="true" />}
-                    />
-                  </div>
+                  {/* REMOVED: Extra overflow-hidden wrapper that caused double cropping */}
+                  <Media
+                    src={m.photo?.url}
+                    alt={`Portrait of ${m.name}`}
+                    seed={m.id}
+                    ratio="aspect-square" // CHANGED: Square fits standard portraits much better without aggressive clipping
+                    objectFit="object-contain" // CHANGED: Ensures the full image is always visible
+                    className="bg-slate-50/50" // ADDED: Soft backdrop for transparent/smaller images
+                    icon={<Users2 className="size-7" aria-hidden="true" />}
+                  />
                   <div className="p-6">
                     <Badge variant="primary" size="sm">
                       {m.position}
@@ -121,14 +121,15 @@ export default async function OurTeamPage() {
           <StaggerGroup className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {advisors.map((a) => (
               <StaggerItem key={a.id} className="h-full">
-                <article className="flex h-full flex-col items-center rounded-3xl border border-border bg-surface p-6 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-card-hover">
+                <article className="flex h-full flex-col items-center rounded-3xl border border-border bg-surface p-6 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-card-hover group">
                   <Media
                     src={a.photo?.url}
                     alt={`Portrait of ${a.name}`}
                     seed={a.id}
                     ratio="aspect-square"
                     rounded="rounded-full"
-                    className="size-24"
+                    objectFit="object-contain" // CHANGED: Ensures round advisor headshots aren't chopped off at the ears
+                    className="size-24 bg-slate-50"
                     icon={<Award className="size-6" aria-hidden="true" />}
                   />
                   <p className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-accent-50 px-3 py-1 text-xs font-semibold text-accent-700">
