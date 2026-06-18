@@ -5,11 +5,6 @@ import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/**
- * On-brand gradient palettes for placeholder media. A deterministic seed picks
- * one so the same item always renders the same colour, while a gallery looks
- * varied and intentional rather than broken.
- */
 const PALETTES = [
   "from-[#003a6f] via-[#005daa] to-[#1976d2]",
   "from-[#005daa] via-[#1976d2] to-[#0a9bb0]",
@@ -28,27 +23,19 @@ function seedIndex(seed: string, mod: number) {
 export interface MediaProps {
   src?: string | null;
   alt: string;
-  /** Used to vary the placeholder gradient deterministically. */
   seed?: string;
-  /** Optional short label shown inside the placeholder. */
   label?: string;
   icon?: React.ReactNode;
   className?: string;
-  /** Tailwind aspect ratio class, e.g. "aspect-[4/3]". */
   ratio?: string;
   fill?: boolean;
   sizes?: string;
   priority?: boolean;
   rounded?: string;
+  /** Controls image cropping behavior. Use 'object-contain' to show full pictures. */
+  objectFit?: "object-cover" | "object-contain"; 
 }
 
-/**
- * Renders a real image when `src` is provided, otherwise a polished branded
- * placeholder. If the image fails to load (e.g. a portrait file hasn't been
- * uploaded yet) it transparently falls back to the same placeholder, so the
- * page never shows a broken image. Swapping mock content for Cloudinary URLs
- * requires no markup changes — just provide `src`.
- */
 export function Media({
   src,
   alt,
@@ -61,6 +48,7 @@ export function Media({
   sizes = "(max-width: 768px) 100vw, 50vw",
   priority,
   rounded,
+  objectFit = "object-cover", // Default fallback strategy
 }: MediaProps) {
   const [failed, setFailed] = React.useState(false);
 
@@ -80,7 +68,11 @@ export function Media({
           fill
           sizes={sizes}
           priority={priority}
-          className="object-cover"
+          // CHANGED: Dynamic layout control + subtle hover scale transition applied strictly to the inner asset
+          className={cn(
+            "transition-transform duration-500 ease-out group-hover:scale-[1.03]",
+            objectFit
+          )}
           onError={() => setFailed(true)}
         />
       </div>
