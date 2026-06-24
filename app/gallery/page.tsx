@@ -27,6 +27,7 @@ export default async function GalleryPage() {
         title="Our Work in Pictures"
         description="Every photo tells a story of inclusion, resilience and dignity. Explore moments from across our programs and communities."
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Gallery" }]}
+        image={{ src: "/gallery_banner.jpeg" }}
       >
         <HeroChip icon={<Layers className="size-4" aria-hidden="true" />}>
           {galleryCategories.length - 1} Programs

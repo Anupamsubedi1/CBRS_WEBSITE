@@ -26,7 +26,7 @@ export default function CbrsNepalPage() {
       <section className="relative isolate w-full overflow-hidden">
         <div className="absolute inset-0 -z-30 bg-primary" aria-hidden="true" />
         <Image
-          src="/community.jpeg"
+          src="/anniversary_celebration.jpg"
           alt=""
           fill
           priority
