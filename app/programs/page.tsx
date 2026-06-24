@@ -27,7 +27,7 @@ export default async function ProgramsPage() {
         title={hero.title}
         description={hero.description}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Programs" }]}
-        image={{ src: "/banner.jpg" }}
+        image={{ src: "/xmas_program.jpg" }}
       >
         <HeroChip icon={<Layers className="size-4" aria-hidden="true" />}>
           {programs.length} Themes of Work

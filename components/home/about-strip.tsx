@@ -22,7 +22,7 @@ export function AboutStrip() {
           {/* Layered photo composition */}
           <Reveal className="relative pb-10 sm:pb-12">
             <Media
-              src="/community.jpeg"
+              src="/anniversary_celebration.jpg"
               alt="Community members and CBRS staff gathered together in Pokhara"
               ratio="aspect-[5/4]"
               rounded="rounded-3xl"
