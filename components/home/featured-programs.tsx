@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Media } from "@/components/shared/media";
 import { Badge } from "@/components/ui/badge";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/shared/reveal";
-import { programs } from "@/lib/data/programs";
+import { getPrograms } from "@/lib/programs";
 
-export function FeaturedPrograms() {
+export async function FeaturedPrograms() {
+  const programs = await getPrograms();
   const featured = programs.filter((p) => p.featured).slice(0, 3);
   if (featured.length === 0) return null;
   const [lead, ...rest] = featured;

@@ -48,6 +48,24 @@ export function GalleryEditor({
     setToDelete((prev) => (prev.includes(publicId) ? prev : [...prev, publicId]));
   }
 
+  // After a successful save, adopt the persisted content (which now includes
+  // the uploaded image URLs). This keeps the form's serialized state in sync
+  // with the database, so a later save can't overwrite earlier images with
+  // stale nulls. `pickerKey` remounts the image pickers to drop blob previews.
+  // Done with React's "adjust state during render" pattern rather than an
+  // effect, so it applies before paint without cascading renders.
+  const [pickerKey, setPickerKey] = React.useState(0);
+  const [handledState, setHandledState] = React.useState(state);
+  if (state !== handledState) {
+    setHandledState(state);
+    if (state?.success && state.items) {
+      setItems(state.items);
+      if (state.categories) setCategories(state.categories);
+      setToDelete([]);
+      setPickerKey((k) => k + 1);
+    }
+  }
+
   function addCategory() {
     const name = newCategory.trim();
     if (!name || categories.includes(name)) return;
@@ -118,6 +136,7 @@ export function GalleryEditor({
           {items.map((item, i) => (
             <div key={item.id} className="space-y-3 rounded-xl border border-border p-4">
               <ImagePicker
+                key={`${item.id}-${pickerKey}`}
                 name={`item-${item.id}`}
                 label="Image"
                 image={item.image}
@@ -134,25 +153,33 @@ export function GalleryEditor({
                 />
               </div>
               <div className="space-y-1.5">
-                <Label>Program</Label>
+                <Label>Category</Label>
                 <Select
-                  value={item.programSlug}
+                  value={item.category}
                   onChange={(e) =>
                     updateItems((d) => {
-                      const slug = e.target.value;
-                      d[i].programSlug = slug;
-                      d[i].category =
-                        programs.find((p) => p.slug === slug)?.title ?? "";
+                      const category = e.target.value;
+                      d[i].category = category;
+                      // Link to a program when the category matches one, so the
+                      // photo also appears on that program's page. Custom
+                      // categories simply have no program link.
+                      d[i].programSlug =
+                        programs.find((p) => p.title === category)?.slug ?? "";
                     })
                   }
                 >
-                  <option value="">Select a program</option>
-                  {programs.map((p) => (
-                    <option key={p.slug} value={p.slug}>{p.title}</option>
-                  ))}
+                  <option value="">Select a category</option>
+                  {categories
+                    .filter((c) => c !== "All")
+                    .map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
                 </Select>
                 <p className="text-xs text-muted">
-                  The photo appears under this program in the gallery and on the
+                  The photo appears under this category on the gallery page. If
+                  the category matches a program, it also shows on that
                   program&apos;s page.
                 </p>
               </div>

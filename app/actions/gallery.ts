@@ -6,7 +6,9 @@ import { saveGalleryContent } from "@/lib/gallery";
 import { uploadImage, deleteImage } from "@/lib/cloudinary";
 import type { GalleryItem } from "@/lib/types";
 
-export type SaveGalleryState = { error?: string; success?: boolean } | undefined;
+export type SaveGalleryState =
+  | { error?: string; success?: boolean; items?: GalleryItem[]; categories?: string[] }
+  | undefined;
 
 export async function saveGalleryAction(
   _prev: SaveGalleryState,
@@ -67,5 +69,9 @@ export async function saveGalleryAction(
   revalidatePath("/");
   revalidatePath("/admin/gallery");
 
-  return { success: true };
+  // Return the persisted content (now carrying the uploaded image URLs) so the
+  // editor can resync. Without this the client keeps image:null for freshly
+  // uploaded photos, and the next save writes those nulls back — wiping
+  // previously-uploaded images.
+  return { success: true, items, categories };
 }
