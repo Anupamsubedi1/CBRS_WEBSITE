@@ -63,7 +63,6 @@ export function Hero() {
             Inclusive Society Where{" "}
             <br className="hidden sm:block" />
             Every Person Can Live with{" "}
-            <br className="hidden sm:block" />
             <Typewriter
               text={[
                 "Dignity and Opportunity",
