@@ -32,7 +32,7 @@ export function Hero() {
       />
       {/* 2 · Hero photograph — optimized, object-fit: cover, focal point on subject */}
       <Image
-        src="/cbrs_heroone.jpeg"
+        src="/cbrs_hero_background.png"
         alt="A CBRS Nepal facilitator supporting a smiling boy who uses a wheelchair, surrounded by community members in a Nepali village"
         fill
         priority
