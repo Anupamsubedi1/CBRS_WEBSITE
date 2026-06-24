@@ -83,9 +83,31 @@ export function Typewriter({
   }
 
   return (
-    <span className={className} aria-label={current}>
-      <span aria-hidden="true">{current.slice(0, count)}</span>
-      <span className="typewriter-caret" aria-hidden="true" />
+    <span
+      className="grid w-full grid-cols-1 items-start justify-items-start"
+      aria-label={current}
+    >
+      {/* Invisible copies of every phrase reserve the tallest footprint the
+          typewriter can occupy, so the heading never reflows — and the hero
+          section never resizes (which is what made the background photo appear
+          to zoom in/out) — as the phrases type and delete. */}
+      {phrases.map((phrase, i) => (
+        <span
+          key={i}
+          aria-hidden="true"
+          className="invisible col-start-1 row-start-1"
+        >
+          {phrase}
+        </span>
+      ))}
+      {/* The visible, animated phrase, overlaid on the reserved space. */}
+      <span
+        aria-hidden="true"
+        className={`col-start-1 row-start-1${className ? ` ${className}` : ""}`}
+      >
+        {current.slice(0, count)}
+        <span className="typewriter-caret" />
+      </span>
     </span>
   );
 }
