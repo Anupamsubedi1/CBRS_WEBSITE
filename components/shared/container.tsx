@@ -14,10 +14,10 @@ export function Container({
   return (
     <div
       className={cn(
-        "mx-auto w-full px-[5px] sm:px-[6px] lg:px-[8px]",
+        "mx-auto w-full px-1.25 sm:px-1.5 lg:px-2",
         size === "default" && "max-w-7xl",
         size === "narrow" && "max-w-4xl",
-        size === "wide" && "max-w-[88rem]",
+        size === "wide" && "max-w-352",
         className,
       )}
       {...props}

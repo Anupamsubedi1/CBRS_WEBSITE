@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /* ------------------------------------------------------------------ */
@@ -75,8 +76,8 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
 
   /* Embla — always mounted (used on mobile always, on desktop only in 1×1) */
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: "start", skipSnaps: false },
-    [Autoplay({ delay: 8000, stopOnInteraction: false })],
+    { loop: true, duration: 25 },
+    [Autoplay({ delay: 8000, stopOnInteraction: true })],
   );
 
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -85,6 +86,8 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setSelectedIndex(emblaApi.selectedScrollSnap());
+    /* Restart autoplay after any manual navigation so the timer resets */
+    emblaApi.plugins()?.autoplay?.play();
   }, [emblaApi]);
 
   useEffect(() => {
@@ -101,6 +104,8 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
     (index: number) => emblaApi?.scrollTo(index),
     [emblaApi],
   );
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   /* Stop/start autoplay when leaving/entering slide mode */
   useEffect(() => {
@@ -121,7 +126,7 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
   return (
     <>
       {/* ---- Background images ---- */}
-      <div className="absolute inset-0 -z-20" aria-hidden="true">
+      <div className="absolute inset-0 -z-20 bg-white" aria-hidden="true">
         {/* ── Embla slide carousel ── */}
         {/* Always visible on mobile. On desktop, only when layout is 1×1. */}
         <div
@@ -133,21 +138,23 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
           )}
           ref={emblaRef}
         >
-          <div className="flex h-full">
+          <div className="flex h-full will-change-transform">
             {HERO_IMAGES.map((img, i) => (
               <div
-                key={i}
-                className="relative min-w-0 shrink-0 grow-0 basis-full"
+                key={`slide-${i}`}
+                className="relative min-w-0 shrink-0 grow-0 basis-full isolate backface-hidden"
               >
-                <Image
-                  src={img.src}
-                  alt=""
-                  fill
-                  priority={i === 0}
-                  sizes="100vw"
-                  className="object-cover"
-                  style={{ objectPosition: "50% 38%" }}
-                />
+                <div className="absolute inset-0 transition-transform duration-700 ease-out hover:scale-[1.04]">
+                  <Image
+                    src={img.src}
+                    alt=""
+                    fill
+                    priority={i === 0}
+                    sizes="100vw"
+                    className="object-cover"
+                    style={{ objectPosition: "50% 38%" }}
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -157,11 +164,11 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
         <div
           className={cn(
             "hidden h-full w-full",
-            showGrid && "md:grid md:grid-cols-2 md:grid-rows-2",
+            showGrid && "md:grid md:grid-cols-2 md:grid-rows-2 md:gap-1 md:p-1 bg-white",
           )}
         >
           {HERO_IMAGES.map((img, i) => (
-            <div key={i} className="relative h-full w-full overflow-hidden">
+            <div key={`grid-${i}`} className="relative h-full w-full overflow-hidden transition-transform duration-700 ease-out hover:scale-[1.04] backface-hidden">
               <Image
                 src={img.src}
                 alt=""
@@ -179,11 +186,11 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
         <div
           className={cn(
             "hidden h-full w-full",
-            showRow && "md:flex",
+            showRow && "md:flex md:gap-1 md:p-1",
           )}
         >
           {HERO_IMAGES.map((img, i) => (
-            <div key={i} className="relative h-full w-1/4 shrink-0 overflow-hidden">
+            <div key={`row-${i}`} className="relative h-full flex-1 overflow-hidden bg-white transition-transform duration-700 ease-out hover:scale-[1.04] backface-hidden">
               <Image
                 src={img.src}
                 alt=""
@@ -200,7 +207,7 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
 
       {/* ---- Desktop slide dots (only in 1×1 mode) ---- */}
       {showSlide && (
-        <div className="absolute bottom-6 left-1/2 z-30 hidden -translate-x-1/2 items-center gap-2 md:flex">
+        <div className="absolute left-1/2 top-4 z-30 hidden -translate-x-1/2 items-center gap-2 md:flex">
           {scrollSnaps.map((_, i) => (
             <button
               key={i}
@@ -218,8 +225,30 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
         </div>
       )}
 
+      {/* ---- Prev / Next arrows (1×1 only) ---- */}
+      {showSlide && (
+        <>
+          <button
+            type="button"
+            onClick={scrollPrev}
+            className="absolute left-3 top-1/2 z-30 -translate-y-1/2 rounded-full bg-black/40 p-2.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-accent hover:scale-110 active:scale-95 md:left-5"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
+          </button>
+          <button
+            type="button"
+            onClick={scrollNext}
+            className="absolute right-3 top-1/2 z-30 -translate-y-1/2 rounded-full bg-black/40 p-2.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-accent hover:scale-110 active:scale-95 md:right-5"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
+          </button>
+        </>
+      )}
+
       {/* ---- Layout switcher — top right (desktop only) ---- */}
-      <div className="absolute right-4 top-4 z-30 hidden items-center gap-1 rounded-lg bg-black/50 px-2.5 py-2 backdrop-blur-sm md:flex">
+      <div className="absolute right-4 top-4 z-30 hidden items-center gap-1 rounded-lg px-2.5 py-2 backdrop-blur-sm md:flex">
         {LAYOUTS.map(({ key, label, icon }) => (
           <button
             key={key}
@@ -240,7 +269,7 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
       </div>
 
       {/* ---- Mobile slide dots (always visible, always 1×1) ---- */}
-      <div className="absolute bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 md:hidden">
+      <div className="absolute left-1/2 top-4 z-30 flex -translate-x-1/2 items-center gap-2 md:hidden">
         {HERO_IMAGES.map((_, i) => (
           <button
             key={i}

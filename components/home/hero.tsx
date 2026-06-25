@@ -34,18 +34,18 @@ export function Hero() {
       <HeroCarousel />
       {/* 3 · Brand-primary overlay — vertical on mobile, left→right fade on desktop */}
       <div
-        className="hero-overlay-y absolute inset-0 -z-10 lg:hidden"
+        className="hero-overlay-y pointer-events-none absolute inset-0 -z-10 lg:hidden"
         aria-hidden="true"
       />
       <div
-        className="hero-overlay-x absolute inset-0 -z-10 hidden lg:block"
+        className="hero-overlay-x pointer-events-none absolute inset-0 -z-10 hidden lg:block"
         aria-hidden="true"
       />
 
       {/* ---- Content: copy vertically centred; extra bottom padding leaves
            room for the service cards that overlap the hero's lower edge ---- */}
-      <Container className="relative z-10 flex flex-1 flex-col justify-center pb-28 pt-10 lg:pb-40">
-        <div className="max-w-[44rem]">
+      <Container className="pointer-events-none relative z-10 flex flex-1 flex-col justify-center pb-28 pt-10 lg:pb-40">
+        <div className="pointer-events-auto max-w-176">
           <motion.h1
             {...rise(0.08)}
             className="font-extrabold leading-[1.12] tracking-tight text-white text-[clamp(1.75rem,4vw,2.75rem)]"
