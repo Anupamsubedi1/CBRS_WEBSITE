@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { Typewriter } from "@/components/shared/typewriter";
+import { HeroCarousel } from "@/components/home/hero-carousel";
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -25,21 +25,13 @@ export function Hero() {
        The service cards now live in their own section just below the hero. */
     <section className="relative isolate flex min-h-[78svh] w-full flex-col overflow-hidden lg:min-h-[calc(100svh-var(--header-h)-7rem)]">
       {/* ---- Background layers ---- */}
-      {/* 1 · Brand-primary fallback (shown if the photo is unavailable) */}
+      {/* 1 · Brand-primary fallback (shown if photos are unavailable) */}
       <div
         className="hero-fallback absolute inset-0 -z-30"
         aria-hidden="true"
       />
-      {/* 2 · Hero photograph — optimized, object-fit: cover, focal point on subject */}
-      <Image
-        src="/cbrs_hero_background.png"
-        alt="A CBRS Nepal facilitator supporting a smiling boy who uses a wheelchair, surrounded by community members in a Nepali village"
-        fill
-        priority
-        sizes="100vw"
-        className="-z-20 object-cover"
-        style={{ objectPosition: "50% 38%" }}
-      />
+      {/* 2 · Hero carousel — 4 photos with layout switcher */}
+      <HeroCarousel />
       {/* 3 · Brand-primary overlay — vertical on mobile, left→right fade on desktop */}
       <div
         className="hero-overlay-y absolute inset-0 -z-10 lg:hidden"
