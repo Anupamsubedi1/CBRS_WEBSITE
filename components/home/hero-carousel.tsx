@@ -56,10 +56,10 @@ const LAYOUTS: { key: Layout; label: string; icon: (a: boolean) => React.ReactNo
 /* ------------------------------------------------------------------ */
 
 const HERO_IMAGES = [
-  { src: "/herocarousel/1.jpeg", alt: "CBRS Nepal community activity 1" },
-  { src: "/herocarousel/2.jpeg", alt: "CBRS Nepal community activity 2" },
-  { src: "/herocarousel/3.jpeg", alt: "CBRS Nepal community activity 3" },
-  { src: "/herocarousel/4.jpg", alt: "CBRS Nepal community activity 4" },
+  { src: "/herocarousel/2.jpeg", alt: "CBRS Nepal community activity 1" },
+  { src: "/herocarousel/3.jpeg", alt: "CBRS Nepal community activity 2" },
+  { src: "/herocarousel/4.jpg", alt: "CBRS Nepal community activity 3" },
+  { src: "/herocarousel/1.jpeg", alt: "CBRS Nepal community activity 4" },
 ];
 
 /* ------------------------------------------------------------------ */
