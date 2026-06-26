@@ -225,13 +225,13 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
         </div>
       )}
 
-      {/* ---- Prev / Next arrows (1×1 only) ---- */}
+      {/* ---- Prev / Next arrows (1×1 only, desktop only) ---- */}
       {showSlide && (
         <>
           <button
             type="button"
             onClick={scrollPrev}
-            className="absolute left-3 top-1/2 z-30 -translate-y-1/2 rounded-full bg-black/40 p-2.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-accent hover:scale-110 active:scale-95 md:left-5"
+            className="absolute left-3 top-1/2 z-30 hidden -translate-y-1/2 rounded-full bg-black/40 p-2.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-accent hover:scale-110 active:scale-95 md:left-5 md:block"
             aria-label="Previous slide"
           >
             <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
@@ -239,7 +239,7 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
           <button
             type="button"
             onClick={scrollNext}
-            className="absolute right-3 top-1/2 z-30 -translate-y-1/2 rounded-full bg-black/40 p-2.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-accent hover:scale-110 active:scale-95 md:right-5"
+            className="absolute right-3 top-1/2 z-30 hidden -translate-y-1/2 rounded-full bg-black/40 p-2.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-accent hover:scale-110 active:scale-95 md:right-5 md:block"
             aria-label="Next slide"
           >
             <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />

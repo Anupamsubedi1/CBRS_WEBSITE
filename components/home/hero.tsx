@@ -70,7 +70,7 @@ export function Hero() {
 
           <motion.div
             {...rise(0.18)}
-            className="mt-8 flex flex-wrap items-center gap-4"
+            className="mt-8 flex flex-col items-start gap-4 md:flex-row md:items-center"
           >
             <Button href="/about/cbrs-nepal" variant="accent" size="lg">
               About Us <ArrowRight />
