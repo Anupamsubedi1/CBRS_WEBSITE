@@ -42,7 +42,7 @@ const infoRows: {
   {
     icon: Clock,
     title: "Office hours",
-    lines: [{ text: "Sunday to Friday: 10am to 5pm" }, { text: "Saturday: Closed" }],
+    lines: [{ text: "Sunday to Tuesday: 10am to 5pm" }, { text: "Wednesday to Friday: 10am to 3pm" }, { text: "Saturday: Closed" }],
   },
 ];
 

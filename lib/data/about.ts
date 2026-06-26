@@ -51,7 +51,6 @@ export const supporters: string[] = [
   "Municipalities",
   "WMT, UK",
   "KCF, Hong Kong",
-  "UNEP",
   "South Korea",
   "Individual supporters",
 ];
