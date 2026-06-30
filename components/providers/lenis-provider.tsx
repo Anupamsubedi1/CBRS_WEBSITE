@@ -19,10 +19,13 @@ export function LenisProvider() {
       return;
     }
 
+    // `lerp` (frame-rate-independent interpolation) gives a cleaner, more
+    // consistent feel than duration-based tweening, which restarts its tween on
+    // every wheel tick and reads as stuttery during continuous scrolling.
     const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => 1 - Math.pow(1 - t, 3), // easeOutCubic
+      lerp: 0.1,
       smoothWheel: true,
+      wheelMultiplier: 1,
     });
     lenisRef.current = lenis;
 

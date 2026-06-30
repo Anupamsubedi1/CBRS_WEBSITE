@@ -91,13 +91,11 @@
   }
 
   /* Lenis smooth-scroll: while Lenis is active it owns the scroll animation, so
-     native CSS smoothing must be turned off to avoid the two fighting. These
-     classes are toggled on <html> by Lenis itself. */
-  html.lenis,
-  html.lenis body {
-    height: auto;
-  }
-  .lenis.lenis-smooth {
+     native CSS smoothing must be turned off to avoid the two fighting. The
+     `lenis` class is persistent on <html> while Lenis is mounted (lenis-smooth
+     is only present mid-scroll), so key off `lenis` to disable it at all times.
+     These classes are toggled on <html> by Lenis itself. */
+  html.lenis {
     scroll-behavior: auto !important;
   }
   .lenis.lenis-smooth [data-lenis-prevent] {
@@ -283,6 +281,40 @@
     background: currentColor;
     vertical-align: -0.1em;
     animation: caret-blink 1s step-end infinite;
+  }
+
+  /* Image-card loading indicator — a ball bouncing over three bars. Shown by
+     <Media> on a photo card while the picture loads, then faded out. Brand-blue
+     so it reads on the light placeholder behind it. */
+  .img-loader {
+    width: 40px;
+    height: 26px;
+    --img-loader-c: no-repeat linear-gradient(#005daa 0 0);
+    background:
+      var(--img-loader-c) 0 100%,
+      var(--img-loader-c) 50% 100%,
+      var(--img-loader-c) 100% 100%;
+    background-size: 8px calc(100% - 4px);
+    position: relative;
+  }
+  .img-loader::before {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #005daa;
+    left: 0;
+    top: 0;
+    animation:
+      img-loader-x 1.5s linear infinite alternate,
+      img-loader-y 0.75s cubic-bezier(0, 200, 0.8, 200) infinite;
+  }
+  @keyframes img-loader-x {
+    100% { left: calc(100% - 8px); }
+  }
+  @keyframes img-loader-y {
+    100% { top: -0.1px; }
   }
 }
 

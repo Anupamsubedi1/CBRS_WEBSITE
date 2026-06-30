@@ -51,6 +51,14 @@ export function Media({
   objectFit = "object-cover", // Default fallback strategy
 }: MediaProps) {
   const [failed, setFailed] = React.useState(false);
+  const [loaded, setLoaded] = React.useState(false);
+
+  // Cached images can already be complete by the time React attaches the node,
+  // so `onLoad` never fires — detect that via a callback ref so the loader
+  // doesn't hang on an already-loaded picture.
+  const handleImgRef = React.useCallback((img: HTMLImageElement | null) => {
+    if (img?.complete && img.naturalWidth > 0) setLoaded(true);
+  }, []);
 
   const wrapper = cn(
     "relative overflow-hidden bg-slate-100",
@@ -63,6 +71,7 @@ export function Media({
     return (
       <div className={wrapper}>
         <Image
+          ref={handleImgRef}
           src={src}
           alt={alt}
           fill
@@ -74,7 +83,19 @@ export function Media({
             objectFit
           )}
           onError={() => setFailed(true)}
+          onLoad={() => setLoaded(true)}
         />
+        {/* Loading indicator — covers the card until the photo has loaded, then
+            fades away to reveal the image. */}
+        <div
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none absolute inset-0 grid place-items-center bg-slate-100 transition-opacity duration-500",
+            loaded ? "opacity-0" : "opacity-100",
+          )}
+        >
+          <span className="img-loader" />
+        </div>
       </div>
     );
   }

@@ -97,9 +97,9 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${inter.variable} ${jakarta.variable} h-full`}
+      className={`${inter.variable} ${jakarta.variable}`}
     >
-      <body className="flex min-h-full flex-col bg-background text-foreground antialiased">
+      <body className="flex min-h-dvh flex-col bg-background text-foreground antialiased">
         <a href="#main" className="skip-link">
           Skip to main content
         </a>
