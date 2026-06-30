@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: "Our Team",
   description:
     "Meet the people behind CBRS Nepal: our board of directors, advisors, general members and volunteers working for inclusion and dignity.",
+  alternates: { canonical: "/about/our-team" },
 };
 
 export default async function OurTeamPage() {

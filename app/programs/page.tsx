@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Programs",
   description:
     "Explore CBRS Nepal's programs across rehabilitation, education, livelihood, rights and community development, changing lives across Gandaki Province.",
+  alternates: { canonical: "/programs" },
 };
 
 export default async function ProgramsPage() {

@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: "News & Notices",
   description:
     "Latest news, notices and events from CBRS Nepal, including programs, awareness campaigns, vacancies and announcements.",
+  alternates: { canonical: "/news" },
 };
 
 export default async function NewsPage() {

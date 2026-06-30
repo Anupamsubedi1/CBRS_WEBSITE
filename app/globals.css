@@ -90,6 +90,26 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  /* Lenis smooth-scroll: while Lenis is active it owns the scroll animation, so
+     native CSS smoothing must be turned off to avoid the two fighting. These
+     classes are toggled on <html> by Lenis itself. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);

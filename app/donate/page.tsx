@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   title: "Donate",
   description:
     "Support CBRS Nepal to help people with disabilities and marginalized communities live with dignity and opportunity. Give via a digital wallet or contact our office.",
+  alternates: { canonical: "/donate" },
 };
 
 const impactItems: { t: string; d: string; icon: IconName }[] = [

@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   title: "CBRS Nepal: Our Story",
   description:
     "Learn about CBRS Nepal: our introduction, vision, mission, history, core values and the six themes through which we serve people with disabilities.",
+  alternates: { canonical: "/about/cbrs-nepal" },
 };
 
 export default function CbrsNepalPage() {

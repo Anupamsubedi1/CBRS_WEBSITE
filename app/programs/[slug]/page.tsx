@@ -29,7 +29,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const program = await getProgramBySlug(slug);
   if (!program) return { title: "Program Not Found" };
-  return { title: program.title, description: program.excerpt };
+  return {
+    title: program.title,
+    description: program.excerpt,
+    alternates: { canonical: `/programs/${slug}` },
+  };
 }
 
 export default async function ProgramDetailPage({

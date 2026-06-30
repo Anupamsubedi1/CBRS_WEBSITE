@@ -81,7 +81,6 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
   );
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -92,11 +91,14 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
 
   useEffect(() => {
     if (!emblaApi) return;
-    setScrollSnaps(emblaApi.scrollSnapList());
-    onSelect();
+    /* Sync the active dot only in response to Embla's own events — never
+       synchronously in the effect body (that triggers cascading re-renders).
+       The initial selectedIndex of 0 already matches Embla's starting slide. */
     emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
     return () => {
       emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
     };
   }, [emblaApi, onSelect]);
 
@@ -126,7 +128,10 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
   return (
     <>
       {/* ---- Background images ---- */}
-      <div className="absolute inset-0 -z-20 bg-white" aria-hidden="true">
+      <div
+        className={cn("absolute inset-0 -z-20 bg-white", className)}
+        aria-hidden="true"
+      >
         {/* ── Embla slide carousel ── */}
         {/* Always visible on mobile. On desktop, only when layout is 1×1. */}
         <div
@@ -208,7 +213,7 @@ export function HeroCarousel({ className }: HeroCarouselProps) {
       {/* ---- Desktop slide dots (only in 1×1 mode) ---- */}
       {showSlide && (
         <div className="absolute left-1/2 top-4 z-30 hidden -translate-x-1/2 items-center gap-2 md:flex">
-          {scrollSnaps.map((_, i) => (
+          {HERO_IMAGES.map((_, i) => (
             <button
               key={i}
               type="button"

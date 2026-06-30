@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "Get in touch with CBRS Nepal in Pokhara by phone, email or our contact form. We'd love to hear from you.",
+  alternates: { canonical: "/contact" },
 };
 
 const infoRows: {

@@ -22,7 +22,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const item = await getNewsBySlug(slug);
   if (!item) return { title: "Article Not Found" };
-  return { title: item.title, description: item.excerpt };
+  return {
+    title: item.title,
+    description: item.excerpt,
+    alternates: { canonical: `/news/${slug}` },
+  };
 }
 
 export default async function NewsDetailPage({
