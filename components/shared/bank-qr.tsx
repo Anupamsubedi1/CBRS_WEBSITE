@@ -14,7 +14,7 @@ export async function BankQR({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "w-44 shrink-0 rounded-2xl bg-white p-3 text-center shadow-float",
+        "w-52 shrink-0 rounded-2xl bg-white p-3 text-center shadow-float sm:w-60",
         className,
       )}
     >
@@ -24,7 +24,7 @@ export async function BankQR({ className }: { className?: string }) {
             src={bankQr.image.url}
             alt="CBRS Nepal bank account QR code for donations"
             fill
-            sizes="176px"
+            sizes="(min-width: 1024px) 176px, (min-width: 640px) 256px, 100vw"
             className="object-contain"
           />
         ) : (
