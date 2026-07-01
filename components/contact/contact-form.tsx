@@ -29,8 +29,7 @@ export function ContactForm() {
   });
 
   function onSubmit(values: FormValues) {
-    // Open the visitor's email app with the message pre-filled and addressed to
-    // us. They review and press Send in their own client — no backend needed.
+    const subject = `[${values.subject}] Message from ${values.name}`;
     const body = [
       `Name: ${values.name}`,
       `Email: ${values.email}`,
@@ -40,12 +39,30 @@ export function ContactForm() {
       values.message,
     ].join("\n");
 
-    const mailto =
-      `mailto:${site.contact.email}` +
-      `?subject=${encodeURIComponent(`[${values.subject}] Message from ${values.name}`)}` +
-      `&body=${encodeURIComponent(body)}`;
+    // On phones/tablets, mailto: opens the native mail app (usually Gmail) with
+    // a clean compose screen. On desktop it would open whatever client is set as
+    // the OS default — which many people never use — so we open Gmail on the web
+    // instead, with the message pre-filled. The visitor reviews and hits Send.
+    const isMobile =
+      typeof navigator !== "undefined" &&
+      /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
-    window.location.href = mailto;
+    if (isMobile) {
+      window.location.href =
+        `mailto:${site.contact.email}` +
+        `?subject=${encodeURIComponent(subject)}` +
+        `&body=${encodeURIComponent(body)}`;
+    } else {
+      const gmail =
+        `https://mail.google.com/mail/?view=cm&fs=1` +
+        `&to=${encodeURIComponent(site.contact.email)}` +
+        `&su=${encodeURIComponent(subject)}` +
+        `&body=${encodeURIComponent(body)}`;
+      // Prefer a new tab; if a popup blocker stops it, navigate the current tab.
+      const win = window.open(gmail, "_blank", "noopener,noreferrer");
+      if (!win) window.location.href = gmail;
+    }
+
     setSubmitted(true);
     reset();
   }
