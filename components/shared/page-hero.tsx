@@ -65,7 +65,7 @@ export function PageHero({
       <Container
         className={cn(
           image ? "py-16 lg:py-24" : "py-14 lg:py-20",
-          "relative lg:flex lg:items-center lg:justify-between lg:gap-12",
+          "relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12",
         )}
       >
         <div className="lg:min-w-0 lg:flex-1">
@@ -104,8 +104,8 @@ export function PageHero({
         )}
         </div>
 
-        {/* Bank-account QR — admin-managed; shown on the right of the banner (lg+) */}
-        <BankQR className="hidden lg:block" />
+        {/* Bank-account QR — admin-managed; shown below on small screens and beside the copy on large screens. */}
+        <BankQR className="self-center lg:self-auto" />
       </Container>
     </section>
   );

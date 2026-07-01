@@ -135,7 +135,7 @@ export default function ContactPage() {
               <div className="flex-1 overflow-hidden rounded-3xl border border-border shadow-card">
                 <iframe
                   title="CBRS Nepal location in Pokhara, Nepal"
-                  src="https://www.google.com/maps?q=Pokhara,+Kaski,+Nepal&z=13&output=embed"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2035.9960214053747!2d83.98905722145706!3d28.21306307891559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399595b49ed823bf%3A0x4c27345ebdff998d!2sCBRS%20-%20Nepal!5e1!3m2!1sen!2snp!4v1782884910937!5m2!1sen!2snp"
                   className="h-72 w-full lg:h-full lg:min-h-72"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
