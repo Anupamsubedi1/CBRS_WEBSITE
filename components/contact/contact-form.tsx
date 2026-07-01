@@ -3,35 +3,18 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Send, CheckCircle2, Loader2 } from "lucide-react";
+import { Send, MailCheck } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-
-const schema = z.object({
-  name: z.string().min(2, "Please enter your name."),
-  email: z.string().email("Please enter a valid email address."),
-  phone: z
-    .string()
-    .optional()
-    .refine((v) => !v || /^[\d+\-\s()]{6,}$/.test(v), "Please enter a valid phone number."),
-  subject: z.string().min(1, "Please choose a subject."),
-  message: z.string().min(10, "Please tell us a little more (10+ characters)."),
-});
-
-type FormValues = z.infer<typeof schema>;
-
-const subjects = [
-  "General Enquiry",
-  "Request Services",
-  "Volunteer",
-  "Partnership",
-  "Donation",
-  "Media",
-];
+import { site } from "@/lib/data/site";
+import {
+  contactSchema,
+  subjects,
+  type ContactFormValues as FormValues,
+} from "@/lib/contact-schema";
 
 export function ContactForm() {
   const [submitted, setSubmitted] = React.useState(false);
@@ -39,16 +22,30 @@ export function ContactForm() {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(contactSchema),
     defaultValues: { subject: "" },
   });
 
-  async function onSubmit(values: FormValues) {
-    // Simulate an API request. Wire to your /api/contact route + email service.
-    await new Promise((r) => setTimeout(r, 900));
-    console.log("Contact submission:", values);
+  function onSubmit(values: FormValues) {
+    // Open the visitor's email app with the message pre-filled and addressed to
+    // us. They review and press Send in their own client — no backend needed.
+    const body = [
+      `Name: ${values.name}`,
+      `Email: ${values.email}`,
+      `Phone: ${values.phone || "—"}`,
+      `Subject: ${values.subject}`,
+      "",
+      values.message,
+    ].join("\n");
+
+    const mailto =
+      `mailto:${site.contact.email}` +
+      `?subject=${encodeURIComponent(`[${values.subject}] Message from ${values.name}`)}` +
+      `&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailto;
     setSubmitted(true);
     reset();
   }
@@ -57,19 +54,20 @@ export function ContactForm() {
     return (
       <div className="flex flex-col items-center rounded-2xl border border-accent/30 bg-accent-50 p-10 text-center">
         <span className="grid size-14 place-items-center rounded-full bg-accent text-white">
-          <CheckCircle2 className="size-7" aria-hidden="true" />
+          <MailCheck className="size-7" aria-hidden="true" />
         </span>
-        <h3 className="mt-4 text-xl font-bold text-foreground">Message sent!</h3>
+        <h3 className="mt-4 text-xl font-bold text-foreground">Almost there!</h3>
         <p className="mt-2 max-w-sm text-muted">
-          Thank you for reaching out to CBRS Nepal. Our team will get back to you
-          as soon as possible.
+          We&rsquo;ve opened your email app with your message ready to go. Just
+          press <span className="font-semibold text-foreground">Send</span> there
+          to deliver it to CBRS Nepal.
         </p>
         <Button
           onClick={() => setSubmitted(false)}
           variant="outline"
           className="mt-6"
         >
-          Send another message
+          Write another message
         </Button>
       </div>
     );
@@ -166,21 +164,8 @@ export function ContactForm() {
         )}
       </div>
 
-      <Button
-        type="submit"
-        size="lg"
-        disabled={isSubmitting}
-        className="w-full sm:w-auto"
-      >
-        {isSubmitting ? (
-          <>
-            <Loader2 className="animate-spin" /> Sending…
-          </>
-        ) : (
-          <>
-            <Send /> Send Message
-          </>
-        )}
+      <Button type="submit" size="lg" className="w-full sm:w-auto">
+        <Send /> Send Message
       </Button>
     </form>
   );
