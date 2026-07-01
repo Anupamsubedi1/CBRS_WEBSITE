@@ -17,11 +17,10 @@ import {
 } from "@/lib/contact-schema";
 
 export function ContactForm() {
-  const [submitted, setSubmitted] = React.useState(false);
+  const [sent, setSent] = React.useState(false);
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(contactSchema),
@@ -63,31 +62,9 @@ export function ContactForm() {
       if (!win) window.location.href = gmail;
     }
 
-    setSubmitted(true);
-    reset();
-  }
-
-  if (submitted) {
-    return (
-      <div className="flex flex-col items-center rounded-2xl border border-accent/30 bg-accent-50 p-10 text-center">
-        <span className="grid size-14 place-items-center rounded-full bg-accent text-white">
-          <MailCheck className="size-7" aria-hidden="true" />
-        </span>
-        <h3 className="mt-4 text-xl font-bold text-foreground">Almost there!</h3>
-        <p className="mt-2 max-w-sm text-muted">
-          We&rsquo;ve opened your email app with your message ready to go. Just
-          press <span className="font-semibold text-foreground">Send</span> there
-          to deliver it to CBRS Nepal.
-        </p>
-        <Button
-          onClick={() => setSubmitted(false)}
-          variant="outline"
-          className="mt-6"
-        >
-          Write another message
-        </Button>
-      </div>
-    );
+    // Keep the visitor on the contact page — the email opens in a separate tab
+    // (desktop) or the mail app (mobile). We only show a small inline note.
+    setSent(true);
   }
 
   return (
@@ -180,6 +157,18 @@ export function ContactForm() {
           </p>
         )}
       </div>
+
+      {sent && (
+        <p
+          className="flex items-center gap-2 rounded-xl border border-accent/30 bg-accent-50 p-3 text-sm text-foreground"
+          role="status"
+        >
+          <MailCheck className="size-4 shrink-0 text-accent" aria-hidden="true" />
+          We&rsquo;ve opened your email with the message ready — just press{" "}
+          <span className="font-semibold">Send</span> there to deliver it to CBRS
+          Nepal.
+        </p>
+      )}
 
       <Button type="submit" size="lg" className="w-full sm:w-auto">
         <Send /> Send Message
