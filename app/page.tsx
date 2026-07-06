@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Hero } from "@/components/home/hero";
 import { ServicePillars } from "@/components/home/service-pillars";
 import { AboutStrip } from "@/components/home/about-strip";
+import { TechvionGift } from "@/components/home/techvion-gift";
 import { ThemesSection } from "@/components/home/themes-section";
 import { FeaturedPrograms } from "@/components/home/featured-programs";
 import { Highlights } from "@/components/home/highlights";
@@ -17,6 +18,7 @@ export default function HomePage() {
       <Hero />
       <ServicePillars />
       <AboutStrip />
+      <TechvionGift />
       <ThemesSection />
       <FeaturedPrograms />
       <Highlights />
