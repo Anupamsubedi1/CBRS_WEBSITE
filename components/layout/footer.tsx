@@ -107,7 +107,16 @@ export function Footer() {
           <p className="text-center sm:text-left">
             © {new Date().getFullYear()} {site.name}. All Rights Reserved.{" "}
             <span className="text-white/45">
-              Designed &amp; created by Techvion Technology.
+              A gift from{" "}
+              <a
+                href="https://www.techvion.com.np"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-accent-100 underline underline-offset-2"
+              >
+                Techvion Technology
+              </a>
+              .
             </span>
           </p>
           <p>
