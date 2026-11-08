@@ -76,24 +76,32 @@ disabilities):
   `role="alert"` validation messages
 - `prefers-reduced-motion` honored throughout; descriptive `alt` text
 
-## Connecting the backend (next phase)
+## Backend and admin login setup
 
-The pages render from `lib/data/*`, which is intentionally shaped to match
-`lib/types.ts`. To go live with admin-managed content:
+The admin panel is available at `/admin/login`. Content is stored in MongoDB,
+with initial content seeded from `lib/data/*`.
 
-1. Add env vars in `.env.local`:
-   ```
-   MONGODB_URI=...
-   CLOUDINARY_CLOUD_NAME=...
-   CLOUDINARY_API_KEY=...
-   CLOUDINARY_API_SECRET=...
-   ```
-2. Replace the synchronous exports in `lib/data/{programs,news,gallery,team,donation}.ts`
-   with `async` functions that query MongoDB and return the same types.
-3. Store uploaded media in Cloudinary; set the returned URL on `coverImage`/`src`
-   fields — the `<Media>` component already prefers a real `src` over its
-   branded placeholder, so no markup changes are needed.
-4. Build the admin panel for the four admin-managed areas (Programs, Gallery,
-   News & Notices, Donation) per the page-structure spec.
+1. Copy `.env.example` to `.env.local` for local development.
+2. Set `MONGODB_URI` to your MongoDB connection string, including the application
+   database name. The database user needs read and write access, and the database
+   must accept connections from the machine running the website.
+3. Set `ADMIN_ID` and `ADMIN_PASSWORD` before the first login. When the `admins`
+   collection is empty, the application creates this account with a hashed
+   password. These values do not replace or reset an existing account: use the
+   credentials originally configured for that database. Passwords are exact,
+   including any leading or trailing spaces.
+4. Restart `npm run dev`, then open `/admin/login` and sign in.
 
-`next.config.ts` already allow-lists `res.cloudinary.com` for `next/image`.
+For a hosted website, set the same variables in the hosting provider's runtime
+environment and redeploy. A local `.env.local` file is not uploaded by Git.
+Production must use HTTPS for the secure session cookie.
+
+If the login form reports that sign-in is not configured, check `MONGODB_URI`
+and, for a new database, `ADMIN_ID` and `ADMIN_PASSWORD`. If it reports that
+sign-in is temporarily unavailable, check the server's `[admin/auth]` logs,
+database availability, network access rules, credentials, and permissions. A
+failed initial database connection can be retried without restarting the server.
+
+Set `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` to
+enable image uploads. `next.config.ts` already allows `res.cloudinary.com` for
+`next/image`.

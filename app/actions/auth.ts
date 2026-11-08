@@ -3,11 +3,14 @@
 import crypto from "crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import type { Db } from "mongodb";
 import { getDb } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/password";
 
 const COOKIE_NAME = "admin_session";
 const COLLECTION = "admins";
+const SETUP_ERROR =
+  "Admin sign-in has not been configured. Please contact the website administrator.";
 
 function makeSessionToken(adminId: string): string {
   return crypto
@@ -16,21 +19,29 @@ function makeSessionToken(adminId: string): string {
     .digest("hex");
 }
 
-async function ensureAdminExists() {
-  const db = await getDb();
+async function ensureAdminExists(db: Db): Promise<boolean> {
   const existing = await db.collection(COLLECTION).findOne({});
-  if (existing) return;
+  if (existing) return true;
 
-  const envId = process.env.ADMIN_ID;
+  const envId = process.env.ADMIN_ID?.trim();
   const envPassword = process.env.ADMIN_PASSWORD;
   if (!envId || !envPassword) {
-    throw new Error("ADMIN_ID and ADMIN_PASSWORD must be set in .env.local for first-time setup.");
+    console.error("[admin/auth] Set ADMIN_ID and ADMIN_PASSWORD for first-time setup.");
+    return false;
   }
 
   await db.collection(COLLECTION).insertOne({
     adminId: envId,
     passwordHash: await hashPassword(envPassword),
     createdAt: new Date(),
+  });
+  return true;
+}
+
+function logAuthFailure(operation: string, error: unknown) {
+  // Do not log credentials, connection strings, or database error payloads.
+  console.error(`[admin/auth] ${operation} failed. Check database connectivity and permissions.`, {
+    errorType: error instanceof Error ? error.name : "UnknownError",
   });
 }
 
@@ -41,24 +52,28 @@ export async function login(
   formData: FormData,
 ): Promise<LoginState> {
   const id = String(formData.get("admin_id") ?? "").trim();
-  const password = String(formData.get("password") ?? "").trim();
+  const password = String(formData.get("password") ?? "");
 
   if (!id || !password) {
     return { error: "Both fields are required." };
   }
 
-  await ensureAdminExists();
-
-  const db = await getDb();
-  const admin = await db.collection(COLLECTION).findOne({ adminId: id });
-
-  if (!admin) {
-    return { error: "Invalid admin ID or password." };
+  if (!process.env.MONGODB_URI) {
+    console.error("[admin/auth] Set MONGODB_URI to enable admin sign-in.");
+    return { error: SETUP_ERROR };
   }
 
-  const valid = await verifyPassword(password, admin.passwordHash as string);
-  if (!valid) {
-    return { error: "Invalid admin ID or password." };
+  try {
+    const db = await getDb();
+    if (!(await ensureAdminExists(db))) return { error: SETUP_ERROR };
+
+    const admin = await db.collection(COLLECTION).findOne({ adminId: id });
+    if (!admin || !(await verifyPassword(password, admin.passwordHash))) {
+      return { error: "Invalid admin ID or password." };
+    }
+  } catch (error) {
+    logAuthFailure("Sign-in", error);
+    return { error: "Unable to sign in right now. Please try again shortly." };
   }
 
   const cookieStore = await cookies();
@@ -86,12 +101,21 @@ export async function logout() {
 export async function getAdminId(): Promise<string | null> {
   const cookieStore = await cookies();
   const session = cookieStore.get(COOKIE_NAME)?.value;
-  if (!session) return null;
+  if (!session || session.length !== 64 || !/^[0-9a-f]{64}$/.test(session)) return null;
 
-  const db = await getDb();
-  const admin = await db.collection(COLLECTION).findOne({});
-  if (!admin) return null;
+  try {
+    const db = await getDb();
+    const admin = await db.collection(COLLECTION).findOne({});
+    if (!admin || typeof admin.adminId !== "string") return null;
 
-  const expected = makeSessionToken(admin.adminId as string);
-  return session === expected ? (admin.adminId as string) : null;
+    const expected = makeSessionToken(admin.adminId);
+    return crypto.timingSafeEqual(Buffer.from(session, "hex"), Buffer.from(expected, "hex"))
+      ? admin.adminId
+      : null;
+  } catch (error) {
+    // The login page shares the admin layout. A stale cookie must not make
+    // that page unusable during a database outage; deny access and allow retry.
+    logAuthFailure("Session verification", error);
+    return null;
+  }
 }
